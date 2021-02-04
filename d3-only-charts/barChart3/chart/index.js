@@ -1,9 +1,5 @@
 /* global d3 */
 
-// TODO - update colours
-// Add key
-// Make groups bar version
-
 const currencyToNumber = (x) => Math.round(Number(x.replace(/[^0-9.-]+/g, "")));
 
 const drawBarChart = async () => {
@@ -42,6 +38,39 @@ const drawBarChart = async () => {
     }
     return acc;
   }, {});
+
+  const donorStatusList = {
+    "Public Fund": {
+      color: "cornflowerblue",
+      name: "Public Fund",
+    },
+    Individual: {
+      color: "salmon",
+      name: "Individual",
+    },
+    Trust: {
+      color: "grey",
+      name: "Trust",
+    },
+    Company: {
+      color: "seaGreen",
+      name: "Company",
+    },
+    "Trade Union": {
+      color: "darkseaGreen",
+      name: "Trade Union",
+    },
+    "Friendly Society": {
+      color: "gold",
+      name: "Friendly Society",
+    },
+    "Unincorporated Association": {
+      color: "pink",
+      name: "Unincorporated Association",
+    },
+  };
+
+  console.log("partyMax: ", partyMax);
 
   const dataset = Object.keys(partiesAndAmounts)
     .map((party) => {
@@ -109,37 +138,13 @@ const drawBarChart = async () => {
     .enter()
     .append("rect")
     .attr("x", (d) => xScale(xAccessor(d)))
-    .attr("y", (d, i) => {
-      console.log(d, i);
+    .attr("y", (d) => {
       return yScale(yAccessor(d) + runningTotalAccessor(d));
     })
     .attr("width", xScale.bandwidth())
     .attr("data-status", (d) => d.donorStatus)
     .attr("height", (d) => dimensions.boundedHeight - yScale(yAccessor(d)))
-    .attr("fill", (d) => {
-      // console.log(d.donorStatus);
-      if (d.donorStatus === "Public Fund") {
-        return "cornflowerblue";
-      }
-      if (d.donorStatus === "Individual") {
-        return "salmon";
-      }
-      if (d.donorStatus === "Trust") {
-        return "grey";
-      }
-      if (d.donorStatus === "Company") {
-        return "seaGreen";
-      }
-      if (d.donorStatus === "Trade Union") {
-        return "darkseaGreen";
-      }
-      if (d.donorStatus === "Friendly Society") {
-        return "lightCoral";
-      }
-      if (d.donorStatus === "Unincorporated Association") {
-        return "pink";
-      }
-    });
+    .attr("fill", (d) => donorStatusList[d.donorStatus].color);
 
   const xAxisGenerator = d3.axisBottom().scale(xScale).tickSize(0);
 
@@ -179,6 +184,32 @@ const drawBarChart = async () => {
     .attr("transform", "rotate(-90)")
     .style("font-family", "sans-serif")
     .style("text-anchor", "end");
+
+  const legend = bounds
+    .append("g")
+    .selectAll(".legend")
+    .data(Object.values(donorStatusList))
+    .enter()
+    .append("g")
+    .attr("class", "legend");
+
+  legend
+    .append("rect")
+    .attr("x", dimensions.boundedWidth - 200)
+    .attr("y", (_, i) => i * 18)
+    .attr("width", 12)
+    .attr("height", 12)
+    .style("fill", (d) => d.color);
+
+  legend
+    .append("text")
+    .attr("x", dimensions.boundedWidth - 180)
+    .attr("y", (_, i) => i * 18 + 6)
+    .attr("dy", ".35em")
+    .style("text-anchor", "start")
+    .text((d) => d.name)
+    .style("font-size", "12px")
+    .style("font-family", "sans-serif");
 };
 
 drawBarChart();
