@@ -1,10 +1,32 @@
 /* global d3 */
 
+const currencyToNumber = (x) => Math.round(Number(x.replace(/[^0-9.-]+/g, "")));
+
 const drawBarChart = async () => {
-  const data = await d3.csv("./political_donations.csv");
-  const dataset = data.filter(
-    (d) => d.RegulatedEntityType === "Political Party"
-  );
+  const rawData = await d3.csv("./political_donations.csv");
+  const partiesAndAmounts = rawData
+    .filter((d) => d.RegulatedEntityType === "Political Party")
+    .reduce((acc, curr) => {
+      if (!acc[curr.RegulatedEntityName]) {
+        console.log(true);
+        acc[curr.RegulatedEntityName] = currencyToNumber(curr.Value);
+      } else {
+        console.log(false);
+        acc[curr.RegulatedEntityName] += currencyToNumber(curr.Value);
+      }
+      return acc;
+    }, {});
+
+  const dataset = Object.keys(partiesAndAmounts)
+    .map((party) => {
+      return {
+        party,
+        amount: partiesAndAmounts[party],
+      };
+    })
+    .sort((a, b) => {
+      return b.amount - a.amount;
+    });
   const width = 800;
   let dimensions = {
     width,
@@ -21,15 +43,11 @@ const drawBarChart = async () => {
   dimensions.boundedHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
-  console.log("height: ", dimensions.boundedHeight);
-
+  console.log("hello");
   console.log("dataset: ", dataset);
 
-  const yAccessor = (d) => Number(d.Value.replace(/[^0-9.-]+/g, ""));
-  const xAccessor = (d) => d.RegulatedEntityName;
-
-  console.log("y: ", yAccessor(dataset[0]));
-  console.log("x: ", xAccessor(dataset[0]));
+  const yAccessor = (d) => d.amount;
+  const xAccessor = (d) => d.party;
 
   const wrapper = d3
     .select("#wrapper")
@@ -75,7 +93,16 @@ const drawBarChart = async () => {
     .style("text-anchor", "end")
     .style("font-size", "12px");
 
-  const yAxisGenerator = d3.axisLeft().scale(yScale);
+  const yAxisGenerator = d3
+    .axisLeft()
+    .scale(yScale)
+    .tickFormat(function (d) {
+      if (d > 0) {
+        return "£" + d;
+      } else {
+        return "0";
+      }
+    });
 
   bounds
     .append("g")
@@ -85,8 +112,8 @@ const drawBarChart = async () => {
 
   bounds
     .append("text")
-    .attr("x", -55)
-    .attr("y", -65)
+    .attr("x", -65)
+    .attr("y", -75)
     .attr("fill", "black")
     .style("font-size", "14px")
     .text("Amount in £")
