@@ -28,12 +28,14 @@ const drawBarChart = async () => {
       acc[curr.RegulatedEntityName] = {
         total: currencyToNumber(curr.Value),
         runningTotal: 0,
+        orderInGroup: 1
       };
     } else {
       acc[curr.RegulatedEntityName] = {
         total:
           acc[curr.RegulatedEntityName].total + currencyToNumber(curr.Value),
         runningTotal: 0,
+        orderInGroup: 1
       };
     }
     return acc;
@@ -70,8 +72,6 @@ const drawBarChart = async () => {
     },
   };
 
-  console.log("partyMax: ", partyMax);
-
   const dataset = Object.keys(partiesAndAmounts)
     .map((party) => {
       const result = {
@@ -79,15 +79,22 @@ const drawBarChart = async () => {
         donorStatus: partiesAndAmounts[party].donorStatus,
         amount: partiesAndAmounts[party].amount,
         runningTotal: partyMax[partiesAndAmounts[party].party].runningTotal,
+        orderInGroup: partyMax[partiesAndAmounts[party].party].orderInGroup,
         total: partyMax[partiesAndAmounts[party].party].total,
       };
       partyMax[partiesAndAmounts[party].party].runningTotal +=
         partiesAndAmounts[party].amount;
+        partyMax[partiesAndAmounts[party].party].orderInGroup += 1;
       return result;
+    })
+    .filter(x => {
+      return x;
     })
     .sort((a, b) => {
       return b.amount - a.amount;
     });
+  
+  console.log("dataset: ", dataset);
 
   const width = 800;
   let dimensions = {
@@ -128,20 +135,25 @@ const drawBarChart = async () => {
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(dataset, totalAccessor)])
+    .domain([0, d3.max(dataset, yAccessor)])
     .range([dimensions.boundedHeight, 0])
     .nice();
 
+  const groupedBarWidth = xScale.bandwidth() / 5;
+  
   bounds
     .selectAll("rect")
     .data(dataset)
     .enter()
     .append("rect")
-    .attr("x", (d) => xScale(xAccessor(d)))
-    .attr("y", (d) => {
-      return yScale(yAccessor(d) + runningTotalAccessor(d));
+    .attr("x", (d) => {
+      const rectX = xScale(xAccessor(d)) + groupedBarWidth * d.orderInGroup;
+      return rectX;
     })
-    .attr("width", xScale.bandwidth())
+    .attr("y", (d) => {
+      return yScale(yAccessor(d));
+    })
+    .attr("width", groupedBarWidth)
     .attr("data-status", (d) => d.donorStatus)
     .attr("height", (d) => dimensions.boundedHeight - yScale(yAccessor(d)))
     .attr("fill", (d) => donorStatusList[d.donorStatus].color);
