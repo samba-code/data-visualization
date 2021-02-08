@@ -18,8 +18,8 @@ groupedBarChart - grouped bar chart.
 ## Charts 2
 
 - Line chart - DONE
-- Area chart - NEXT
-- Scatter Plot 
+- Area chart - DONE
+- Scatter Plot - NEXT
 - Pie Chart
 
 ## Charts 3
