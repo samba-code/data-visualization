@@ -26,7 +26,7 @@ groupedBarChart - grouped bar chart.
 
 - Histogram - DONE
 - Donut chart - DONE
-- Multi level pie chart
+- Multi level pie chart - DONE
 - Venn diagram
 
 ## Charts 4
@@ -65,5 +65,20 @@ Add tests
 Add storybook
 Check code quality
 Put in place on portfolio
+
+## Stages
+
+1. Make 24 basic charts using D3 only.
+2. Update 24 charts with interaction, animation, tooltips, dropdowns, live data using d3 only.
+3. Make same charts using React, improve styling, improve data source, polish, improve code quality - tests, storybook, code review.
+4. Add to website - all or best 12.
+
+---
+
+## Next phase
+
+Data story - data journalism.
+Art piece - visualisation as art.
+Stock tracker - fully featured, zoomable.
 
 ---
