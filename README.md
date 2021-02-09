@@ -19,13 +19,13 @@ groupedBarChart - grouped bar chart.
 
 - Line chart - DONE
 - Area chart - DONE
-- Scatter Plot - NEXT
-- Pie Chart
+- Scatter Plot - DONE
+- Pie Chart - DONE
 
 ## Charts 3
 
-- Histogram 
-- Donut chart
+- Histogram
+- Donut chart - DONE
 - Multi level pie chart
 - Venn diagram
 
@@ -49,3 +49,21 @@ groupedBarChart - grouped bar chart.
 - Streamgraph
 - Graph Data
 - Matrix
+
+## Levels
+
+Basic chart with D3 x24
+Add dropdown to change measures
+Add animations
+Add roll over
+Improve styling
+Add interesting data
+Add description
+Add polish / make charts good enough for client work
+Make in React
+Add tests
+Add storybook
+Check code quality
+Put in place on portfolio
+
+---
