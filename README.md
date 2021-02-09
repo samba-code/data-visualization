@@ -24,7 +24,7 @@ groupedBarChart - grouped bar chart.
 
 ## Charts 3
 
-- Histogram
+- Histogram - DONE
 - Donut chart - DONE
 - Multi level pie chart
 - Venn diagram
