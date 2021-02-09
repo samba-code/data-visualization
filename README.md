@@ -27,7 +27,7 @@ groupedBarChart - grouped bar chart.
 - Histogram - DONE
 - Donut chart - DONE
 - Multi level pie chart - DONE
-- Venn diagram - IN PROGRESS
+- Venn diagram - DONE
 
 ## Charts 4
 
