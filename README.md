@@ -27,7 +27,7 @@ groupedBarChart - grouped bar chart.
 - Histogram - DONE
 - Donut chart - DONE
 - Multi level pie chart - DONE
-- Venn diagram
+- Venn diagram - IN PROGRESS
 
 ## Charts 4
 
@@ -80,5 +80,6 @@ Put in place on portfolio
 Data story - data journalism.
 Art piece - visualisation as art.
 Stock tracker - fully featured, zoomable.
+3D charts - web, AR, VR
 
 ---
