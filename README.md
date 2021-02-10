@@ -31,10 +31,10 @@ groupedBarChart - grouped bar chart.
 
 ## Charts 4
 
-- Heatmap
-- Map
-- Tree
-- Bubble
+- Heatmap - NEXT
+- Map - NEXT
+- Tree - NEXT
+- Bubble - NEXT
 
 ## Charts 5
 
@@ -52,18 +52,27 @@ groupedBarChart - grouped bar chart.
 
 ## Levels
 
+1. Level 1
 Basic chart with D3 x24
+
+2. Level 2
 Add dropdown to change measures
 Add animations
 Add roll over
+
+3. Level 3
 Improve styling
 Add interesting data
 Add description
+
+4. Level 4
 Add polish / make charts good enough for client work
 Make in React
 Add tests
 Add storybook
 Check code quality
+
+5. Level 5
 Put in place on portfolio
 
 ## Stages
@@ -83,3 +92,12 @@ Stock tracker - fully featured, zoomable.
 3D charts - web, AR, VR
 
 ---
+
+## Alternative plan
+
+Get first 12 basic charts to level 5.
+Then work on more advanced charts.
+Means I would get to launch quicker.
+I might miss out on doing more advanced charts which would sell my work more effectively.
+I won't have too long a break from D3 course.
+I can use things I learn from course for more advanced charts.

@@ -2,31 +2,66 @@
 
 const currencyToNumber = (x) => Math.round(Number(x.replace(/[^0-9.-]+/g, "")));
 
-const drawBarChart = async () => {
+// const updateTransition = 
+//     d3.transition()
+//     .duration(600)
+//     .ease(d3.easeBounceOut);
+
+const drawBarChart = async (currentMeasure) => {
+
+  let dataset;
+
+  const updateBarChart = (newMeasure) => {
+    bounds
+    .selectAll("rect")
+    .transition()
+    .duration(600)
+    .ease(d3.easeSinInOut)
+    .attr("x", (d) => xScale(xAccessor(d)))
+    .attr("y", (d) => yScale(yAccessor(d, newMeasure)))
+    .attr("width", xScale.bandwidth())
+    .attr("height", (d) => {
+      return dimensions.boundedHeight - yScale(yAccessor(d, newMeasure))})
+  };
+
+  const onSelectChange = (e) => {
+    const newMeasure = e.currentTarget.value;
+    updateBarChart(newMeasure);
+  };
+  
+  const measureSelector = document.getElementById("chartOptions");
+  measureSelector.addEventListener("change", onSelectChange);
+  
+  const yAccessor = (d, m = "amount") => d[m];
+  const amountAccessor = (d) => d["amount"];
+  const xAccessor = (d) => d.party;
+
   const rawData = await d3.csv("./political_donations.csv");
   const partiesAndAmounts = rawData
     .filter((d) => d.RegulatedEntityType === "Political Party")
     .reduce((acc, curr) => {
       if (!acc[curr.RegulatedEntityName]) {
-        console.log(true);
         acc[curr.RegulatedEntityName] = currencyToNumber(curr.Value);
       } else {
-        console.log(false);
         acc[curr.RegulatedEntityName] += currencyToNumber(curr.Value);
       }
       return acc;
     }, {});
 
-  const dataset = Object.keys(partiesAndAmounts)
+  const makeDataset = (data) => Object.keys(data)
     .map((party) => {
       return {
         party,
-        amount: partiesAndAmounts[party],
+        amount: data[party],
+        randomAmount: data[party] * Math.random()
       };
     })
     .sort((a, b) => {
       return b.amount - a.amount;
     });
+
+  dataset = makeDataset(partiesAndAmounts); 
+
   const width = 800;
   let dimensions = {
     width,
@@ -43,12 +78,6 @@ const drawBarChart = async () => {
   dimensions.boundedHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
-  console.log("hello");
-  console.log("dataset: ", dataset);
-
-  const yAccessor = (d) => d.amount;
-  const xAccessor = (d) => d.party;
-
   const wrapper = d3
     .select("#wrapper")
     .append("svg")
@@ -57,6 +86,7 @@ const drawBarChart = async () => {
 
   const bounds = wrapper
     .append("g")
+    .attr("class", "barsGroup")
     .style("transform", `translate(100px, ${dimensions.margin.top}px)`);
 
   const xScale = d3
@@ -67,20 +97,34 @@ const drawBarChart = async () => {
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(dataset, yAccessor)])
+    .domain([0, d3.max(dataset, amountAccessor)])
     .range([dimensions.boundedHeight, 0])
     .nice();
 
-  bounds
+    bounds
     .selectAll("rect")
     .data(dataset)
     .enter()
     .append("rect")
     .attr("x", (d) => xScale(xAccessor(d)))
-    .attr("y", (d) => yScale(yAccessor(d)))
+    .attr("y", (d) => { 
+      return dimensions.boundedHeight})
     .attr("width", xScale.bandwidth())
-    .attr("height", (d) => dimensions.boundedHeight - yScale(yAccessor(d)))
+    .attr("height", "0")
     .attr("fill", "cornflowerblue");
+
+  bounds
+    .selectAll("rect")
+    .transition()
+    .duration(1000)
+    .attr("x", (d) => xScale(xAccessor(d)))
+    .attr("y", (d) => { 
+      return yScale(yAccessor(d, currentMeasure))})
+    .attr("width", xScale.bandwidth())
+    .attr("height", (d) => {
+      return dimensions.boundedHeight - yScale(yAccessor(d, currentMeasure))})
+    .transition()
+    .style("fill", "blue");
 
   const xAxisGenerator = d3.axisBottom().scale(xScale).tickSize(0);
 
@@ -106,20 +150,19 @@ const drawBarChart = async () => {
 
   bounds
     .append("g")
+    .attr("class", "yAxisText")
     .call(yAxisGenerator)
     .selectAll("text")
-    .style("font-size", "12px");
 
   bounds
     .append("text")
+    .attr("class", "yAxisLabel")
     .attr("x", -65)
     .attr("y", -75)
     .attr("fill", "black")
-    .style("font-size", "14px")
     .text("Amount in £")
     .attr("transform", "rotate(-90)")
-    .style("font-family", "sans-serif")
-    .style("text-anchor", "end");
+
 };
 
-drawBarChart();
+drawBarChart("amount");

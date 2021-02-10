@@ -1,0 +1,18 @@
+h1 {
+    margin-left: 35px;
+    font-family: sans-serif;
+  }
+
+.barsGroup rect {
+
+}
+
+.yAxisText {
+    font-size: 12px;
+}
+
+.yAxisLabel {
+    font-size: 14px;
+    font-family: sans-serif;
+    text-anchor: end;
+}

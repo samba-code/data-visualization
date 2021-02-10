@@ -4,15 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Politcal donations 2020</title>
-    <style>
-      h1 {
-        margin-left: 35px;
-        font-family: sans-serif;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <h1>UK Political donations in 2020</h1>
+    <select id="chartOptions">
+      <option value="amount">Amount</option>
+      <option value="randomAmount">Random Amount</option>
+    </select>
     <div id="wrapper"></div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.5.0/d3.min.js"
