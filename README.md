@@ -91,6 +91,12 @@ Art piece - visualisation as art.
 Stock tracker - fully featured, zoomable.
 3D charts - web, AR, VR
 
+## Other features
+
+Area selection scrubber
+Zoom
+Minimap
+
 ---
 
 ## Alternative plan

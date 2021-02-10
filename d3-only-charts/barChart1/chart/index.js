@@ -1,11 +1,54 @@
 /* global d3 */
+let nowMeasure = "amount";
+
+const width = 800;
+let dimensions = {
+  width,
+  height: width * 0.6,
+  margin: {
+    top: 30,
+    right: 10,
+    bottom: 250,
+    left: 100,
+  },
+};
+dimensions.boundedWidth =
+  dimensions.width - dimensions.margin.left - dimensions.margin.right;
+dimensions.boundedHeight =
+  dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
+
+const colorScheme = d3["schemePaired"];
+console.log(colorScheme);
 
 const currencyToNumber = (x) => Math.round(Number(x.replace(/[^0-9.-]+/g, "")));
 
-// const updateTransition = 
-//     d3.transition()
-//     .duration(600)
-//     .ease(d3.easeBounceOut);
+// const toolTip = document.getElementById("toolTip");
+const tooltip = d3.select("#toolTip")
+
+function mouseEnter(event, datum) { 
+  d3.select(this).transition().style("fill", "lightgrey")
+  tooltip
+  // TODO - find better way to do this
+  .style("left", `${Number(event.target.getAttribute("x")) + 75}px`)
+  .style("top", `${Number(event.target.getAttribute("y")) - 5}px`)
+  .style("opacity", "100");
+
+  tooltip.select("#toolTipText")
+  .text(`£${d3.format(",.0f")(datum[nowMeasure])}`)
+}
+
+function mouseLeave(datum) { 
+  d3.select(this)
+  .transition()
+  .style("fill", datum.color);
+
+  tooltip
+  .style("opacity", "0");
+
+  tooltip.select("#toolTipText")
+  .text("")
+}
+
 
 const drawBarChart = async (currentMeasure) => {
 
@@ -26,6 +69,7 @@ const drawBarChart = async (currentMeasure) => {
 
   const onSelectChange = (e) => {
     const newMeasure = e.currentTarget.value;
+    nowMeasure = newMeasure;
     updateBarChart(newMeasure);
   };
   
@@ -49,11 +93,12 @@ const drawBarChart = async (currentMeasure) => {
     }, {});
 
   const makeDataset = (data) => Object.keys(data)
-    .map((party) => {
+    .map((party, i) => {
       return {
         party,
         amount: data[party],
-        randomAmount: data[party] * Math.random()
+        randomAmount: data[party] * Math.random(),
+        color: colorScheme[i]
       };
     })
     .sort((a, b) => {
@@ -61,22 +106,6 @@ const drawBarChart = async (currentMeasure) => {
     });
 
   dataset = makeDataset(partiesAndAmounts); 
-
-  const width = 800;
-  let dimensions = {
-    width,
-    height: width * 0.6,
-    margin: {
-      top: 30,
-      right: 10,
-      bottom: 250,
-      left: 100,
-    },
-  };
-  dimensions.boundedWidth =
-    dimensions.width - dimensions.margin.left - dimensions.margin.right;
-  dimensions.boundedHeight =
-    dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
   const wrapper = d3
     .select("#wrapper")
@@ -101,7 +130,7 @@ const drawBarChart = async (currentMeasure) => {
     .range([dimensions.boundedHeight, 0])
     .nice();
 
-    bounds
+   const bars = bounds
     .selectAll("rect")
     .data(dataset)
     .enter()
@@ -111,10 +140,9 @@ const drawBarChart = async (currentMeasure) => {
       return dimensions.boundedHeight})
     .attr("width", xScale.bandwidth())
     .attr("height", "0")
-    .attr("fill", "cornflowerblue");
+    .attr("fill", (d) => d.color);
 
-  bounds
-    .selectAll("rect")
+    bars
     .transition()
     .duration(1000)
     .attr("x", (d) => xScale(xAccessor(d)))
@@ -123,8 +151,10 @@ const drawBarChart = async (currentMeasure) => {
     .attr("width", xScale.bandwidth())
     .attr("height", (d) => {
       return dimensions.boundedHeight - yScale(yAccessor(d, currentMeasure))})
-    .transition()
-    .style("fill", "blue");
+
+    bars
+    .on("mouseenter", mouseEnter)
+    .on("mouseleave", mouseLeave)
 
   const xAxisGenerator = d3.axisBottom().scale(xScale).tickSize(0);
 
@@ -142,7 +172,7 @@ const drawBarChart = async (currentMeasure) => {
     .scale(yScale)
     .tickFormat(function (d) {
       if (d > 0) {
-        return "£" + d;
+        return "£" + d3.format(",.0f")(d);
       } else {
         return "0";
       }
