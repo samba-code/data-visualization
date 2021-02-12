@@ -5,16 +5,13 @@ const convertToCelcius = (x) => x - 273.15;
 const drawScatterPlot = async () => {
   const rawData = await d3.json("./weather-data.json");
   const { hourly } = rawData;
-  const dataset = hourly.map((hour, i) => { 
+  const dataset = hourly.map((hour) => {
     return {
       temp: +convertToCelcius(hour.temp).toFixed(2),
-      humidity: hour.humidity
+      humidity: hour.humidity,
     };
   });
-  const width = d3.min([
-    window.innerWidth * 0.9,
-    window.innerHeight * 0.9,
-  ]);
+  const width = d3.min([window.innerWidth * 0.9, window.innerHeight * 0.9]);
   let dimensions = {
     width,
     height: width,
@@ -54,13 +51,68 @@ const drawScatterPlot = async () => {
     .range([dimensions.boundedHeight, 0])
     .nice();
 
-    const dots = bounds.selectAll("circle")
+  bounds
+    .selectAll("circle")
     .data(dataset)
-    .enter().append("circle")
-      .attr("cx", d => xScale(xAccessor(d)))
-      .attr("cy", d => yScale(yAccessor(d)))
-      .attr("fill", "skyblue")
-      .attr("r", 4)
+    .enter()
+    .append("circle")
+    .attr("cx", (d) => xScale(xAccessor(d)))
+    .attr("cy", (d) => yScale(yAccessor(d)))
+    .attr("fill", "skyblue")
+    .attr("r", 6);
+
+  const tooltip = d3.select("#tooltip");
+
+  function onMouseEnter(event, d) {
+    console.log("event: ", event);
+    tooltip.style("opacity", 1);
+    tooltip.style("display", "flex");
+    // const selection = d3.select(event.currentTarget);
+    tooltip.select("#temperature").text(`${d.temp}°`);
+    tooltip.select("#humidity").text(`${d.humidity}`);
+    const x = xScale(d.humidity);
+    const y = yScale(d.temp);
+    console.log("current target: ", x, y);
+    tooltip.style(
+      "transform",
+      `translate(calc(100% + ${x}px - 267px), calc(100% + ${y}px - 275px))`
+    );
+    bounds
+      .append("circle")
+      .attr("class", "tooltip-dot")
+      .attr("cx", xScale(xAccessor(d)))
+      .attr("cy", yScale(yAccessor(d)))
+      .attr("r", 6)
+      .style("fill", "maroon")
+      .style("pointer-events", "none");
+  }
+
+  const delaunay = d3.Delaunay.from(
+    dataset,
+    (d) => xScale(xAccessor(d)),
+    (d) => yScale(yAccessor(d))
+  );
+
+  const voronoi = delaunay.voronoi();
+  voronoi.xmax = dimensions.boundedWidth;
+  voronoi.ymax = dimensions.boundedHeight;
+
+  bounds
+    .selectAll(".voronoi")
+    .data(dataset)
+    .join("path")
+    .attr("class", "voronoi")
+    .attr("d", (d, i) => voronoi.renderCell(i))
+    .on("mouseenter", onMouseEnter)
+    .on("mouseleave", onMouseLeave);
+
+  console.log(delaunay);
+
+  function onMouseLeave() {
+    tooltip.style("opacity", 0);
+    tooltip.style("display", "none");
+    d3.selectAll(".tooltip-dot").remove();
+  }
 
   const xAxisGenerator = d3.axisBottom().scale(xScale);
 
@@ -84,11 +136,10 @@ const drawScatterPlot = async () => {
     .call(yAxisGenerator)
     .selectAll("text")
     .style("font-size", "12px");
-    
 
   bounds
     .append("text")
-    .attr("x", - dimensions.boundedWidth / 2)
+    .attr("x", -dimensions.boundedWidth / 2)
     .attr("y", -60)
     .attr("fill", "black")
     .style("font-size", "14px")
@@ -97,7 +148,7 @@ const drawScatterPlot = async () => {
     .style("font-family", "sans-serif")
     .style("text-anchor", "middle");
 
-    bounds
+  bounds
     .append("text")
     .attr("x", dimensions.boundedWidth / 2)
     .attr("y", dimensions.boundedHeight + 50)
