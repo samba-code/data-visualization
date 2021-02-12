@@ -6,10 +6,10 @@ const drawLineChart = async () => {
   const rawData = await d3.json("./weather-data.json");
   console.log("data: ", rawData);
   const { hourly } = rawData;
-  const dailyTemps = hourly.map((hour, i) => { 
+  const dailyTemps = hourly.map((hour, i) => {
     return {
       temp: +convertToCelcius(hour.temp).toFixed(2),
-      hour: i + 1
+      hour: i + 1,
     };
   });
   console.log(dailyTemps);
@@ -53,25 +53,27 @@ const drawLineChart = async () => {
     .range([dimensions.boundedHeight, 0])
     .nice();
 
-    const freezingTemperaturePlacement = yScale(0)
-    const freezingTemperatures = bounds.append("rect")
-        .attr("x", 0)
-        .attr("width", dimensions.boundedWidth)
-        .attr("y", freezingTemperaturePlacement)
-        .attr("height", dimensions.boundedHeight
-          - freezingTemperaturePlacement)
-        .attr("fill", "#e0f3f3")
+  const freezingTemperaturePlacement = yScale(0);
+  const freezingTemperatures = bounds
+    .append("rect")
+    .attr("x", 0)
+    .attr("width", dimensions.boundedWidth)
+    .attr("y", freezingTemperaturePlacement)
+    .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
+    .attr("fill", "#e0f3f3");
 
-  const lineGenerator = d3.line()
+  const lineGenerator = d3
+    .line()
     .curve(d3.curveMonotoneX)
-    .x(d => xScale(xAccessor(d)))
-    .y(d => yScale(yAccessor(d)))
+    .x((d) => xScale(xAccessor(d)))
+    .y((d) => yScale(yAccessor(d)));
 
-  const line = bounds.append("path")
+  const line = bounds
+    .append("path")
     .attr("d", lineGenerator(dailyTemps))
     .attr("fill", "none")
     .attr("stroke", "skyblue")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", 2);
 
   const xAxisGenerator = d3.axisBottom().scale(xScale);
 
@@ -108,7 +110,7 @@ const drawLineChart = async () => {
     .style("font-family", "sans-serif")
     .style("text-anchor", "end");
 
-    bounds
+  bounds
     .append("text")
     .attr("x", dimensions.boundedWidth / 2)
     .attr("y", dimensions.boundedHeight + 50)
@@ -117,6 +119,68 @@ const drawLineChart = async () => {
     .text("Hours")
     .style("font-family", "sans-serif")
     .style("text-anchor", "middle");
+
+  const listenerRect = bounds
+    .append("rect")
+    .attr("class", "listener-rect")
+    .attr("width", dimensions.boundedWidth)
+    .attr("height", dimensions.boundedHeight)
+    .on("mouseenter", onMouseEnter)
+    .on("mousemove", onMouseMove)
+    .on("mouseleave", onMouseLeave);
+
+  const tooltip = d3.select("#tooltip");
+
+  const getDistanceFromHoveredDate = (d, hoveredDate) => {
+    return Math.abs(xAccessor(d) - hoveredDate);
+  };
+
+  function onMouseEnter() {
+    tooltip.style("opacity", 1);
+    tooltipCircle.style("opacity", 1);
+  }
+
+  const tooltipCircle = bounds
+    .append("circle")
+    .attr("class", "tooltip-circle")
+    .attr("r", 4)
+    .style("opacity", 0);
+
+  function onMouseMove(event, d) {
+    const mousePosition = d3.pointer(event);
+    const hoveredDate = xScale.invert(mousePosition[0]);
+    const closestIndex = d3.leastIndex(dailyTemps, (a, b) => {
+      return (
+        getDistanceFromHoveredDate(a, hoveredDate) -
+        getDistanceFromHoveredDate(b, hoveredDate)
+      );
+    });
+
+    const closestDataPoint = dailyTemps[closestIndex];
+
+    tooltip.select("#hour").text(xAccessor(closestDataPoint));
+    tooltip
+      .select("#temperature")
+      .text(d3.format(".1f")(yAccessor(closestDataPoint)) + "°C");
+
+    const x = xScale(xAccessor(closestDataPoint)) + dimensions.margin.left;
+    const y = yScale(yAccessor(closestDataPoint)) + dimensions.margin.top;
+    tooltip.style(
+      "transform",
+      `translate(calc(-50% + ${x}px), calc(${y}px + 20%) )`
+    );
+
+    tooltipCircle
+      .attr("cx", xScale(xAccessor(closestDataPoint)))
+      .attr("cy", yScale(yAccessor(closestDataPoint)))
+      .style("pointer-events", "none")
+      .attr("fill", "blue");
+  }
+
+  function onMouseLeave() {
+    tooltip.style("opacity", 0);
+    tooltipCircle.style("opacity", 0);
+  }
 };
 
 drawLineChart();

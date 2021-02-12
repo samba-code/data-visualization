@@ -4,16 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Line Chart</title>
-    <style>
-      h1 {
-        margin-left: 35px;
-        font-family: sans-serif;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <h1>Temperature in the next 48 hours</h1>
-    <div id="wrapper"></div>
+    <div id="wrapper">
+      <div id="tooltip" class="tooltip">
+        <div class="tooltip-hour">Hour: <span id="hour"></span></div>
+        <div class="tooltip-temperature">
+          Temperature: <span id="temperature"></span>
+        </div>
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.5.0/d3.min.js"
       integrity="sha512-0XfwGD1nxplHpehcSVI7lY+m/5L37PNHDt+DOc7aLFckwPXjnjeA1oeNbru7YeI4VLs9i+ADnnHEhP69C9CqTA=="
