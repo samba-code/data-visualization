@@ -61,30 +61,32 @@ const drawScatterPlot = async () => {
     .attr("fill", "skyblue")
     .attr("r", 6);
 
+
+    function onMouseClick(event, dClicked) {
+      bounds
+      .selectAll("circle")
+      .data(dataset)
+      .attr("fill", (d) => { 
+        console.log(dClicked, d);
+        if(JSON.stringify(dClicked) === JSON.stringify(d)) {
+        return "red";
+      } else return "skyblue"})
+    }
+  
+
   const tooltip = d3.select("#tooltip");
 
   function onMouseEnter(event, d) {
-    console.log("event: ", event);
     tooltip.style("opacity", 1);
     tooltip.style("display", "flex");
-    // const selection = d3.select(event.currentTarget);
     tooltip.select("#temperature").text(`${d.temp}°`);
     tooltip.select("#humidity").text(`${d.humidity}`);
     const x = xScale(d.humidity);
     const y = yScale(d.temp);
-    console.log("current target: ", x, y);
     tooltip.style(
       "transform",
       `translate(calc(100% + ${x}px - 267px), calc(100% + ${y}px - 275px))`
     );
-    bounds
-      .append("circle")
-      .attr("class", "tooltip-dot")
-      .attr("cx", xScale(xAccessor(d)))
-      .attr("cy", yScale(yAccessor(d)))
-      .attr("r", 6)
-      .style("fill", "maroon")
-      .style("pointer-events", "none");
   }
 
   const delaunay = d3.Delaunay.from(
@@ -94,8 +96,10 @@ const drawScatterPlot = async () => {
   );
 
   const voronoi = delaunay.voronoi();
-  voronoi.xmax = dimensions.boundedWidth;
-  voronoi.ymax = dimensions.boundedHeight;
+  voronoi.xmin = -10;
+  voronoi.ymin = -10;
+  voronoi.xmax = dimensions.boundedWidth + 10;
+  voronoi.ymax = dimensions.boundedHeight + 10;
 
   bounds
     .selectAll(".voronoi")
@@ -103,10 +107,9 @@ const drawScatterPlot = async () => {
     .join("path")
     .attr("class", "voronoi")
     .attr("d", (d, i) => voronoi.renderCell(i))
+    .on("click", onMouseClick)
     .on("mouseenter", onMouseEnter)
     .on("mouseleave", onMouseLeave);
-
-  console.log(delaunay);
 
   function onMouseLeave() {
     tooltip.style("opacity", 0);
