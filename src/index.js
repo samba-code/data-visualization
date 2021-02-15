@@ -1,5 +1,3 @@
-import BarChart1 from "./charts/barChart1/barChart1.js";
-
 import React from "react";
 import { render } from "react-dom";
 import { Reset } from "styled-reset";
@@ -27,7 +25,7 @@ const App = () => {
     <ThemeProvider theme={sambaThemeOne}>
       <Reset />
       <GlobalStyle />
-      <BarChart1 />
+      <div>TEST 123</div>
     </ThemeProvider>
   );
 };
