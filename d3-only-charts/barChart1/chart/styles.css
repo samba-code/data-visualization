@@ -20,6 +20,16 @@ h1 {
   text-anchor: end;
 }
 
+#infoBoxA {
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+#infoBoxB {
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
 .toolTip {
   position: absolute;
   top: 100px;

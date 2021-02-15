@@ -22,7 +22,6 @@ console.log(colorScheme);
 
 const currencyToNumber = (x) => Math.round(Number(x.replace(/[^0-9.-]+/g, "")));
 
-// const toolTip = document.getElementById("toolTip");
 const tooltip = d3.select("#toolTip")
 
 function mouseEnter(event, datum) { 
@@ -49,6 +48,13 @@ function mouseLeave(datum) {
   .text("")
 }
 
+function mouseClick(datum, d) { 
+  console.log(d3.select("#infoBoxA"));
+  d3.select("#infoBoxA")
+  .text(`${d.party}`);
+  d3.select("#infoBoxB")
+  .text(`£${d3.format(",.0f")(d.amount)}`);
+}
 
 const drawBarChart = async (currentMeasure) => {
 
@@ -118,6 +124,22 @@ const drawBarChart = async (currentMeasure) => {
     .attr("class", "barsGroup")
     .style("transform", `translate(100px, ${dimensions.margin.top}px)`);
 
+  const infoBoxA = bounds
+    .append("text")
+    .attr("id", "infoBoxA")
+    .attr("x", dimensions.boundedWidth / 2)
+    .attr("y", dimensions.boundedHeight / 2)
+    .attr("fill", "black")
+    .text("A");
+
+    const infoBoxB = bounds
+    .append("text")
+    .attr("id", "infoBoxB")
+    .attr("x", dimensions.boundedWidth / 2)
+    .attr("y", dimensions.boundedHeight / 2 + 20)
+    .attr("fill", "black")
+    .text("B");
+
   const xScale = d3
     .scaleBand()
     .domain(dataset.map((d) => xAccessor(d)))
@@ -155,6 +177,7 @@ const drawBarChart = async (currentMeasure) => {
     bars
     .on("mouseenter", mouseEnter)
     .on("mouseleave", mouseLeave)
+    .on("click", mouseClick)
 
   const xAxisGenerator = d3.axisBottom().scale(xScale).tickSize(0);
 

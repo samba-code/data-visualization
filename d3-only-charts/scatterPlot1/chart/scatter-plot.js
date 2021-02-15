@@ -62,7 +62,7 @@ const drawScatterPlot = async () => {
     .attr("r", 6);
 
 
-    function onMouseClick(event, dClicked) {
+    function onMouseClick(event, dClicked) {f
       bounds
       .selectAll("circle")
       .data(dataset)
