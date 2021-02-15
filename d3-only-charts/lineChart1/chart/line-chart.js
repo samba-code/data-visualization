@@ -146,6 +146,17 @@ const drawLineChart = async () => {
     .attr("r", 4)
     .style("opacity", 0);
 
+  const lineToYAxis = bounds
+    .append("line")
+    .attr("class", "line-to-y")
+    .attr("x0", 0)
+    .attr("x1", dimensions.boundedWidth)
+    .attr("y1", 0)
+    .attr("y2", 0)
+    .attr("stroke-width", 1)
+    .attr("stroke", "black")
+    .style("opacity", 0);
+
   function onMouseMove(event, d) {
     const mousePosition = d3.pointer(event);
     const hoveredDate = xScale.invert(mousePosition[0]);
@@ -170,16 +181,26 @@ const drawLineChart = async () => {
       `translate(calc(-50% + ${x}px), calc(${y}px + 20%) )`
     );
 
+    lineToYAxis 
+    .attr("x0", 0)
+    .attr("x1", x - dimensions.margin.left)
+    .attr("y1", y - dimensions.margin.top)
+    .attr("y2", y - dimensions.margin.top)
+    .style("opacity", 0.5);
+
     tooltipCircle
       .attr("cx", xScale(xAccessor(closestDataPoint)))
       .attr("cy", yScale(yAccessor(closestDataPoint)))
       .style("pointer-events", "none")
       .attr("fill", "blue");
+
   }
 
   function onMouseLeave() {
     tooltip.style("opacity", 0);
     tooltipCircle.style("opacity", 0);
+    lineToYAxis 
+    .style("opacity", 0);
   }
 };
 
