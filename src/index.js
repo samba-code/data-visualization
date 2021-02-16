@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import { Reset } from "styled-reset";
 import { darken, rem } from "polished";
 
-import { sambaThemeOne } from "./theme/theme.js";
+import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
