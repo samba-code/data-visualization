@@ -6,6 +6,8 @@ import { darken, rem } from "polished";
 import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
+import TestProject from "./projects/TestProject/TestProject";
+
 const GlobalStyle = createGlobalStyle`
   body {
     background: ${(props) => props.theme.neutral};
@@ -25,7 +27,7 @@ const App = () => {
     <ThemeProvider theme={sambaThemeOne}>
       <Reset />
       <GlobalStyle />
-      <div>TEST 123</div>
+      <TestProject />
     </ThemeProvider>
   );
 };
