@@ -5,7 +5,6 @@ import { darken, lighten, rem } from "polished";
 
 import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-
 import TestProject from "./projects/TestProject/TestProject";
 
 const GlobalStyle = createGlobalStyle`

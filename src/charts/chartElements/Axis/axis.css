@@ -1,0 +1,22 @@
+
+.Axis__line {
+    stroke: grey;
+  }
+  
+  .Axis__label {
+    text-anchor: middle;
+    font-size: 16px;
+  }
+  
+  .Axis__tick {
+    font-size: 14px;
+  }
+  
+  .AxisHorizontal .Axis__tick {
+    text-anchor: middle;
+  }
+  
+  .AxisVertical .Axis__tick {
+    dominant-baseline: middle;
+    text-anchor: end;
+  }

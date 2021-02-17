@@ -4,9 +4,13 @@ import * as d3 from "d3";
 
 import ChartSize from "../../chartElements/ChartSize/ChartSize";
 import ChartLine from "../../chartTypes/lineChart/ChartLine/ChartLine";
+import ChartWrapper from "../../chartElements/ChartWrapper/ChartWrapper";
 import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
+
+const formatDate = d3.timeFormat("%I %p");
+const formatTemp = (d) => `${(d -273.15).toFixed(2)}°C`;
 
 const LineViz01 = ({ data, xAccessor, yAccessor, yLabel, xLabel }) => {
   const [ref, dimensions] = useChartDimensions({
@@ -15,33 +19,33 @@ const LineViz01 = ({ data, xAccessor, yAccessor, yLabel, xLabel }) => {
   });
 
   const xScale = d3
-  .scaleLinear()
-    .domain([0, d3.max(data, xAccessor)])
+  .scaleTime()
+    .domain(d3.extent(data, xAccessor))
     .range([0, dimensions.boundedWidth]);
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data, yAccessor)])
+    .domain(d3.extent(data, yAccessor))
     .range([dimensions.boundedHeight, 0])
     .nice();
 
   const xAccessorScaled = (d) => xScale(xAccessor(d));
   const yAccessorScaled = (d) => yScale(yAccessor(d));
 
-  console.log("dimensions: ", dimensions);
-
   return (
     <div ref={ref}>
+    <ChartWrapper>
       <ChartSize dimensions={dimensions}>
-        <Axis dimensions={dimensions} dimension="x" scale={xScale} label={xLabel}/>
-        <Axis dimensions={dimensions} dimension="y" scale={yScale} label={yLabel} />
+        <Axis dimensions={dimensions} dimension="x" scale={xScale} label={xLabel} formatTick={formatDate}/>
+        <Axis dimensions={dimensions} dimension="y" scale={yScale} label={yLabel} formatTick={formatTemp}/>
         <ChartLine
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
-          interpolation={d3.curveLinear}
+          interpolation={d3.curveCardinal}
         />
       </ChartSize>
+    </ChartWrapper>
     </div>
   );
 };

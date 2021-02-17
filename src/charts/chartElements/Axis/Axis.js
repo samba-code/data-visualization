@@ -2,7 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from 'd3'
 import { dimensionsPropsType } from "../../utils/utils";
-import { useChartDimensions } from "../../utils/useChartDimensions";
+// import { useChartDimensions } from "../../utils/useChartDimensions";
+import "./axis.css";
 
 const axisComponentsByDimension = {
   x: AxisHorizontal,
@@ -44,9 +45,6 @@ function AxisHorizontal ({ dimensions, label, formatTick, scale, ...props }) {
 
   const ticks = scale.ticks(numberOfTicks);
 
-  console.log("numberOfTicks: ", numberOfTicks);
-  console.log("ticks: ", ticks);
-
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
       <line
@@ -54,7 +52,7 @@ function AxisHorizontal ({ dimensions, label, formatTick, scale, ...props }) {
         x2={dimensions.boundedWidth}
       />
 
-      {ticks.map((tick, i) => (
+      {ticks.map((tick) => (
         <text
           key={tick}
           className="Axis__tick"
@@ -76,6 +74,18 @@ function AxisHorizontal ({ dimensions, label, formatTick, scale, ...props }) {
   )
 }
 
+AxisHorizontal.propTypes = {
+  dimensions: dimensionsPropsType,
+  scale: PropTypes.func,
+  label: PropTypes.string,
+  formatTick: PropTypes.func,
+}
+
+AxisHorizontal.defaultProps = {
+  scale: null,
+  formatTick: d3.format(","),
+}
+
 function AxisVertical ({ dimensions, label, formatTick, scale, ...props }) {
   const numberOfTicks = dimensions.boundedHeight / 70
 
@@ -88,7 +98,7 @@ function AxisVertical ({ dimensions, label, formatTick, scale, ...props }) {
         y2={dimensions.boundedHeight}
       />
 
-      {ticks.map((tick, i) => (
+      {ticks.map((tick) => (
         <text
           key={tick}
           className="Axis__tick"
@@ -110,5 +120,16 @@ function AxisVertical ({ dimensions, label, formatTick, scale, ...props }) {
       )}
     </g>
   )
+}
+AxisVertical.propTypes = {
+  dimensions: dimensionsPropsType,
+  scale: PropTypes.func,
+  label: PropTypes.string,
+  formatTick: PropTypes.func,
+}
+
+AxisVertical.defaultProps = {
+  scale: null,
+  formatTick: d3.format(","),
 }
 
