@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { Reset } from "styled-reset";
-import { darken, rem } from "polished";
+import { darken, lighten, rem } from "polished";
 
 import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -10,7 +10,7 @@ import TestProject from "./projects/TestProject/TestProject";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${(props) => props.theme.neutral};
+    background: ${(props) => lighten("0.15", props.theme.neutral)};
     color: ${(props) => darken("0.1", props.theme.primary)};
     box-sizing: border-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

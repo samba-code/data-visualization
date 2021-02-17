@@ -26,6 +26,9 @@ const ChartLine = ({
       {...props}
       className={`Line Line--type-${type}`}
       d={lineGenerator(data)}
+      strokeWidth="1"
+      stroke="black"
+      fill="none"
     />
   );
 };

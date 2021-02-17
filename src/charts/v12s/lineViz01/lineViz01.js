@@ -4,56 +4,42 @@ import * as d3 from "d3";
 
 import ChartSize from "../../chartElements/ChartSize/ChartSize";
 import ChartLine from "../../chartTypes/lineChart/ChartLine/ChartLine";
-// import Axis from "../../chartElements/axes/leftAxis";
-import Gradient from "../../chartElements/Gradient/Gradient";
+import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
-import { useUniqueId, accessorPropsType } from "../../utils/utils";
+import { accessorPropsType } from "../../utils/utils";
 
-// const formatDate = d3.timeFormat("%-b %-d");
-const gradientColors = ["rgb(226, 222, 243)", "#f8f9fa"];
-
-const LineViz01 = ({ data, xAccessor, yAccessor }) => {
+const LineViz01 = ({ data, xAccessor, yAccessor, yLabel, xLabel }) => {
   const [ref, dimensions] = useChartDimensions({
-    height: 500,
+    height: 300,
     width: 800,
   });
-  const gradientId = useUniqueId("Timeline-gradient");
 
   const xScale = d3
-    .scaleTime()
-    .domain(d3.extent(data, xAccessor))
+  .scaleLinear()
+    .domain([0, d3.max(data, xAccessor)])
     .range([0, dimensions.boundedWidth]);
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(data, yAccessor))
+    .domain([0, d3.max(data, yAccessor)])
     .range([dimensions.boundedHeight, 0])
     .nice();
 
   const xAccessorScaled = (d) => xScale(xAccessor(d));
   const yAccessorScaled = (d) => yScale(yAccessor(d));
-  // const y0AccessorScaled = yScale(yScale.domain()[0]);
+
+  console.log("dimensions: ", dimensions);
 
   return (
-    <div className="Timeline" ref={ref}>
+    <div ref={ref}>
       <ChartSize dimensions={dimensions}>
-        <defs>
-          <Gradient id={gradientId} colors={gradientColors} x2="0" y2="100%" />
-        </defs>
-        {/* <Axis dimension="x" scale={xScale} formatTick={formatDate} />
-        <Axis dimension="y" scale={yScale} label={label} /> */}
-        {/* <ChartLine
-          type="area"
-          data={data}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-          y0Accessor={y0AccessorScaled}
-          style={{ fill: `url(#${gradientId})` }}
-        /> */}
+        <Axis dimensions={dimensions} dimension="x" scale={xScale} label={xLabel}/>
+        <Axis dimensions={dimensions} dimension="y" scale={yScale} label={yLabel} />
         <ChartLine
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
+          interpolation={d3.curveLinear}
         />
       </ChartSize>
     </div>
@@ -64,7 +50,8 @@ LineViz01.propTypes = {
   data: PropTypes.array,
   xAccessor: accessorPropsType,
   yAccessor: accessorPropsType,
-  label: PropTypes.string,
+  xLabel: PropTypes.string,
+  yLabel: PropTypes.string,
 };
 
 LineViz01.defaultProps = {
