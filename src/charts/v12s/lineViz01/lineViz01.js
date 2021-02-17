@@ -9,19 +9,20 @@ import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
-const formatDate = d3.timeFormat("%I %p");
+const formatDate = d3.timeFormat("%H");
+
 const formatTemp = (d) => `${(d -273.15).toFixed(2)}°C`;
 
 const LineViz01 = ({ data, xAccessor, yAccessor, yLabel, xLabel }) => {
   const [ref, dimensions] = useChartDimensions({
-    height: 300,
-    width: 800,
+    height: 300
   });
 
   const xScale = d3
   .scaleTime()
     .domain(d3.extent(data, xAccessor))
-    .range([0, dimensions.boundedWidth]);
+    .range([0, dimensions.boundedWidth])
+    .nice();
 
   const yScale = d3
     .scaleLinear()

@@ -40,8 +40,8 @@ export default Axis
 
 function AxisHorizontal ({ dimensions, label, formatTick, scale, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
-        ? dimensions.boundedWidth / 100
-        : dimensions.boundedWidth / 250
+        ? dimensions.boundedWidth / 50
+        : dimensions.boundedWidth / 100
 
   const ticks = scale.ticks(numberOfTicks);
 
@@ -65,7 +65,7 @@ function AxisHorizontal ({ dimensions, label, formatTick, scale, ...props }) {
       {label && (
         <text
           className="Axis__label"
-          transform={`translate(${dimensions.boundedWidth / 2}, 60)`}
+          transform={`translate(${dimensions.boundedWidth / 2}, 50)`}
         >
           { label }
         </text>
@@ -87,7 +87,7 @@ AxisHorizontal.defaultProps = {
 }
 
 function AxisVertical ({ dimensions, label, formatTick, scale, ...props }) {
-  const numberOfTicks = dimensions.boundedHeight / 70
+  const numberOfTicks = dimensions.boundedHeight / 40
 
   const ticks = scale.ticks(numberOfTicks)
 
@@ -112,7 +112,7 @@ function AxisVertical ({ dimensions, label, formatTick, scale, ...props }) {
         <text
           className="Axis__label"
           style={{
-            transform: `translate(-56px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
+            transform: `translate(-75px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
           }}
         >
           { label }

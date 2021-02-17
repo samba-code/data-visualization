@@ -4,20 +4,27 @@ import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import data from "./weatherData.js";
-import * as d3 from "d3";
 
 const TestProject = () => {
-  // const data = d3.json(data);
   const hourlyWeather = data.hourly;
+  console.log("hourly: ", hourlyWeather);
+  const xAccessor = (d) => {
+    var utcSeconds = d.dt;
+    var weatherDate = new Date(0);
+    weatherDate.setUTCSeconds(utcSeconds);
+    console.log("date: ", weatherDate);
+    return weatherDate;
+  };
+  const yAccessor = (d) => d.temp;
   return (
     <div>
       <Heading1>Temperatures over time</Heading1>
       <LineViz01
         data={hourlyWeather}
-        xAccessor={(d) => d.dt}
-        yAccessor={(d) => d.temp}
-        yLabel="A Line Chart"
-        xLabel="Some values"
+        xAccessor={xAccessor}
+        yAccessor={yAccessor}
+        yLabel="Temperature in Celcius"
+        xLabel=""
       />
     </div>
   );
