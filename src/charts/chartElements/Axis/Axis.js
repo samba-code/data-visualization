@@ -32,13 +32,17 @@ Axis.defaultProps = {
 
 export default Axis;
 
-function AxisHorizontal({ dimensions, label, formatTick, scale, ...props }) {
-  const numberOfTicks =
-    dimensions.boundedWidth < 600
-      ? dimensions.boundedWidth / 50
-      : dimensions.boundedWidth / 100;
-
+function AxisHorizontal({
+  dimensions,
+  label,
+  formatTick,
+  scale,
+  numberOfTicks,
+  ...props
+}) {
   const ticks = scale.ticks(numberOfTicks);
+
+  // console.log("ticks: ", ticks);
 
   return (
     <g
@@ -49,7 +53,7 @@ function AxisHorizontal({ dimensions, label, formatTick, scale, ...props }) {
       <line className="Axis__line" x2={dimensions.boundedWidth} />
 
       {ticks.map((tick) => (
-        <>
+        <g key={`${formatTick(tick)}_${scale(tick)}`}>
           <line
             className="Tick__line"
             y1={0}
@@ -58,17 +62,17 @@ function AxisHorizontal({ dimensions, label, formatTick, scale, ...props }) {
             x2={scale(tick)}
           />
           <text
-            key={tick}
             className="Axis__tick"
             transform={`translate(${scale(tick)}, 25)`}
           >
             {formatTick(tick)}
           </text>
-        </>
+        </g>
       ))}
 
       {label && (
         <text
+          key="labelText"
           className="Axis__label"
           transform={`translate(${dimensions.boundedWidth / 2}, 50)`}
         >
@@ -84,16 +88,23 @@ AxisHorizontal.propTypes = {
   scale: PropTypes.func,
   label: PropTypes.string,
   formatTick: PropTypes.func,
+  numberOfTicks: PropTypes.number,
 };
 
 AxisHorizontal.defaultProps = {
   scale: null,
   formatTick: d3.format(","),
+  numberOfTicks: 10,
 };
 
-function AxisVertical({ dimensions, label, formatTick, scale, ...props }) {
-  const numberOfTicks = dimensions.boundedHeight / 40;
-
+function AxisVertical({
+  dimensions,
+  label,
+  formatTick,
+  scale,
+  numberOfTicks,
+  ...props
+}) {
   const ticks = scale.ticks(numberOfTicks);
 
   return (
@@ -101,7 +112,7 @@ function AxisVertical({ dimensions, label, formatTick, scale, ...props }) {
       <line className="Axis__line" y2={dimensions.boundedHeight} />
 
       {ticks.map((tick) => (
-        <>
+        <g key={`${formatTick(tick)}_${scale(tick)}`}>
           <line
             className="Tick__line"
             y1={scale(tick)}
@@ -110,13 +121,12 @@ function AxisVertical({ dimensions, label, formatTick, scale, ...props }) {
             x2={-5}
           />
           <text
-            key={tick}
             className="Axis__tick"
             transform={`translate(-16, ${scale(tick)})`}
           >
             {formatTick(tick)}
           </text>
-        </>
+        </g>
       ))}
 
       {label && (
@@ -127,6 +137,7 @@ function AxisVertical({ dimensions, label, formatTick, scale, ...props }) {
               dimensions.boundedHeight / 2
             }px) rotate(-90deg)`,
           }}
+          key="labelText"
         >
           {label}
         </text>
@@ -139,9 +150,11 @@ AxisVertical.propTypes = {
   scale: PropTypes.func,
   label: PropTypes.string,
   formatTick: PropTypes.func,
+  numberOfTicks: PropTypes.number,
 };
 
 AxisVertical.defaultProps = {
   scale: null,
   formatTick: d3.format(","),
+  numberOfTicks: 10,
 };

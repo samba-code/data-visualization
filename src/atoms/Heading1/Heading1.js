@@ -1,19 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
-import { rem } from 'polished';
+import React from "react";
+import styled from "styled-components";
+import { rem } from "polished";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const StyledHeading1 = styled.div`
-    font-size: ${rem("24px")};
-    color: ${(props) => props.theme.primary};
-    margin: 20px;
+const StyledHeading1 = styled.h1`
+  font-size: ${rem("24px")};
+  color: ${(props) => props.theme.primary};
+  margin: 20px;
 `;
 
-const Heading1 = ({children}) => <StyledHeading1>{children}</StyledHeading1>;
+const Heading1 = ({ children }) => <StyledHeading1>{children}</StyledHeading1>;
 
 Heading1.propTypes = {
-    children: PropTypes.string
-}
+  children: PropTypes.string,
+};
 
 export default Heading1;

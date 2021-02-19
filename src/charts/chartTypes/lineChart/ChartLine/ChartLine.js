@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 import { accessorPropsType } from "../../../utils/utils";
+import "./ChartLine.css";
 
 const ChartLine = ({
   type,
@@ -24,7 +25,7 @@ const ChartLine = ({
   return (
     <path
       {...props}
-      className={`Line Line--type-${type}`}
+      className="chart-line"
       d={lineGenerator(data)}
       strokeWidth="1"
       stroke="black"

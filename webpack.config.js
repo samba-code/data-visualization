@@ -1,9 +1,11 @@
+/* global require module __dirname */
 const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const presetsConfig = require("./build-utils/presets/loadPresets");
 const modeConfig = (env) => require(`./build-utils/webpack.${env}`)(env);
+const path = require("path");
 
 module.exports = (_, { mode, env, presets }) => {
   // Set up environment variables
@@ -53,6 +55,9 @@ module.exports = (_, { mode, env, presets }) => {
         new MiniCssExtractPlugin(),
         new webpack.DefinePlugin(envKeys),
       ],
+      devServer: {
+        contentBase: path.join(__dirname, "public"),
+      },
       devtool: "source-map",
     },
     modeConfig(mode),
