@@ -108,3 +108,5 @@ dist
 
 .DS_Store
 
+# Public folder with large json file
+public/
