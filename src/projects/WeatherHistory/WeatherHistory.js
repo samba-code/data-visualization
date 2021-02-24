@@ -9,7 +9,8 @@ import * as d3 from "d3";
 
 const getWeatherHistory = async () => {
   // console.time("json");
-  const weatherHistory = await d3.json("./weather-history.json");
+  const dataURL = "https://data.sambacode.net/weather-data-london.json";
+  const weatherHistory = await d3.json(dataURL);
   // console.timeEnd("json");
   return weatherHistory;
 };
