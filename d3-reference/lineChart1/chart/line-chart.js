@@ -4,7 +4,6 @@ const convertToCelcius = (x) => x - 273.15;
 
 const drawLineChart = async () => {
   const rawData = await d3.json("./weather-data.json");
-  console.log("data: ", rawData);
   const { hourly } = rawData;
   const dailyTemps = hourly.map((hour, i) => {
     return {
@@ -12,7 +11,6 @@ const drawLineChart = async () => {
       hour: i + 1,
     };
   });
-  console.log(dailyTemps);
   const width = 800;
   let dimensions = {
     width,
@@ -181,26 +179,24 @@ const drawLineChart = async () => {
       `translate(calc(-50% + ${x}px), calc(${y}px + 20%) )`
     );
 
-    lineToYAxis 
-    .attr("x0", 0)
-    .attr("x1", x - dimensions.margin.left)
-    .attr("y1", y - dimensions.margin.top)
-    .attr("y2", y - dimensions.margin.top)
-    .style("opacity", 0.5);
+    lineToYAxis
+      .attr("x0", 0)
+      .attr("x1", x - dimensions.margin.left)
+      .attr("y1", y - dimensions.margin.top)
+      .attr("y2", y - dimensions.margin.top)
+      .style("opacity", 0.5);
 
     tooltipCircle
       .attr("cx", xScale(xAccessor(closestDataPoint)))
       .attr("cy", yScale(yAccessor(closestDataPoint)))
       .style("pointer-events", "none")
       .attr("fill", "blue");
-
   }
 
   function onMouseLeave() {
     tooltip.style("opacity", 0);
     tooltipCircle.style("opacity", 0);
-    lineToYAxis 
-    .style("opacity", 0);
+    lineToYAxis.style("opacity", 0);
   }
 };
 

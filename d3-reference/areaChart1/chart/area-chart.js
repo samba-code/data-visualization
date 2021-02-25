@@ -4,16 +4,14 @@ const convertToCelcius = (x) => x - 273.15;
 
 const drawLineChart = async () => {
   const rawData = await d3.json("./weather-data.json");
-  console.log("data: ", rawData);
   const { hourly } = rawData;
-  const dailyTemps = hourly.map((hour, i) => { 
+  const dailyTemps = hourly.map((hour, i) => {
     return {
       temp: +convertToCelcius(hour.temp).toFixed(2),
       hour: i + 1,
-      feelsLike: +convertToCelcius(hour.feels_like).toFixed(2)
+      feelsLike: +convertToCelcius(hour.feels_like).toFixed(2),
     };
   });
-  console.log(dailyTemps);
   const width = 800;
   let dimensions = {
     width,
@@ -44,9 +42,10 @@ const drawLineChart = async () => {
     .append("g")
     .style("transform", `translate(100px, ${dimensions.margin.top}px)`);
 
-  const combinedTemps = [...dailyTemps.map(d => d.temp), ...dailyTemps.map(d => d.feelsLike)];
-
-  
+  const combinedTemps = [
+    ...dailyTemps.map((d) => d.temp),
+    ...dailyTemps.map((d) => d.feelsLike),
+  ];
 
   const xScale = d3
     .scaleLinear()
@@ -61,31 +60,35 @@ const drawLineChart = async () => {
 
   const minY = yScale.domain()[0];
 
-  const lineGenerator = d3.area()
+  const lineGenerator = d3
+    .area()
     .curve(d3.curveMonotoneX)
-    .x(d => xScale(xAccessor(d)))
-    .y1(d => yScale(yAccessor(d)))
-    .y0(() => yScale(minY))
+    .x((d) => xScale(xAccessor(d)))
+    .y1((d) => yScale(yAccessor(d)))
+    .y0(() => yScale(minY));
 
-    const lineGenerator2 = d3.area()
+  const lineGenerator2 = d3
+    .area()
     .curve(d3.curveMonotoneX)
-    .x(d => xScale(xAccessor(d)))
-    .y1(d => yScale(yAccessorFeelsLike(d)))
-    .y0(() => yScale(minY))
+    .x((d) => xScale(xAccessor(d)))
+    .y1((d) => yScale(yAccessorFeelsLike(d)))
+    .y0(() => yScale(minY));
 
-  const line = bounds.append("path")
+  const line = bounds
+    .append("path")
     .attr("d", lineGenerator(dailyTemps))
     .attr("fill", "skyblue")
     .attr("fill-opacity", "0.6")
     .attr("stroke", "lightblue")
-    .attr("stroke-width", 0)
+    .attr("stroke-width", 0);
 
-    const line2 = bounds.append("path")
+  const line2 = bounds
+    .append("path")
     .attr("d", lineGenerator2(dailyTemps))
     .attr("fill", "blue")
     .attr("fill-opacity", "0.6")
     .attr("stroke", "blue")
-    .attr("stroke-width", 0)
+    .attr("stroke-width", 0);
 
   const xAxisGenerator = d3.axisBottom().scale(xScale);
 
@@ -122,7 +125,7 @@ const drawLineChart = async () => {
     .style("font-family", "sans-serif")
     .style("text-anchor", "end");
 
-    bounds
+  bounds
     .append("text")
     .attr("x", dimensions.boundedWidth / 2)
     .attr("y", dimensions.boundedHeight + 50)

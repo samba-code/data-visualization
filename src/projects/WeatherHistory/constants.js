@@ -1,35 +1,51 @@
 export const weatherMeasures = {
   "Average Temperature": {
     label: "Average Temperature",
-    accessor: (d) => d.temp,
+    accessor: (d) => Number(d.temp),
+    format: (d) => `${d}°C`,
     default: true,
   },
   "Max Temperature": {
     label: "Max Temperature",
-    accessor: (d) => d.tempMax,
+    format: (d) => `${d}°C`,
+    accessor: (d) => Number(d.tempMax),
   },
   "Min Temperature": {
     label: "Min Temperature",
-    accessor: (d) => d.tempMin,
+    format: (d) => `${d}°C`,
+    accessor: (d) => Number(d.tempMin),
   },
   Rain: {
     label: "Rain",
-    accessor: (d) => d.rain,
+    format: (d) => `${d}mm`,
+    accessor: (d) => Number(d.rain),
+  },
+  Snow: {
+    label: "Snow",
+    format: (d) => `${d}mm`,
+    accessor: (d) => Number(d.snow),
   },
   "Wind Speed": {
     label: "Wind Speed",
-    accessor: (d) => d.wind,
+    format: (d) => `${d}m/s`,
+    accessor: (d) => Number(d.wind),
   },
   Humidity: {
     label: "Humidity",
-    accessor: (d) => d.humidity,
+    format: (d) => `${d}%`,
+    accessor: (d) => Number(d.humidity),
   },
   Pressure: {
     label: "Pressure",
-    accessor: (d) => d.pressure,
+    format: (d) => `${d} hPa`,
+    accessor: (d) => Number(d.pressure),
   },
   Clouds: {
     label: "Clouds",
-    accessor: (d) => d.clouds,
+    format: (d) => `${d}%`,
+    accessor: (d) => Number(d.clouds),
   },
 };
+
+export const START_DATE = "1980-01-01";
+export const END_DATE = "2020-12-31";
