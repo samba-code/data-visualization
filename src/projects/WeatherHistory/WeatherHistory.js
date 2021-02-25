@@ -9,7 +9,8 @@ import * as d3 from "d3";
 
 const getWeatherHistory = async () => {
   // console.time("json");
-  const dataURL = "https://data.sambacode.net/weather-data-london.json";
+  // const dataURL = "https://data.sambacode.net/weather-data-london.json";
+  const dataURL = "./weather-history-london.json";
   const weatherHistory = await d3.json(dataURL);
   // console.timeEnd("json");
   return weatherHistory;
@@ -28,18 +29,14 @@ const WeatherHistory = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getWeatherHistory().then((d) => {
-      const yearData = d.slice(0, 364);
+      const yearData = d.slice(0, 1000);
       // console.log(yearData);
       setChartData(yearData);
       setIsLoading(false);
     });
   }, []);
   const xAccessor = (d) => {
-    var utcSeconds = d.dt;
-    var weatherDate = new Date(0);
-    weatherDate.setUTCSeconds(utcSeconds);
-    // console.log(weatherDate);
-    return weatherDate;
+    return new Date(d.date);
   };
   const onSelectChange = (e) => {
     // console.log("e.value: ", e.currentTarget.value);

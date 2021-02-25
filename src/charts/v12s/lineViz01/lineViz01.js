@@ -11,13 +11,13 @@ import { accessorPropsType } from "../../utils/utils";
 
 const formatDate = (time) => {
   // console.log("time: ", time);
-  const formattedTime = d3.timeFormat("%e/%m");
+  const formattedTime = d3.timeFormat("%e/%m/%y");
   // console.log("formatted date: ", formattedTime);
   // return `${formattedTime(time)}_${Math.random() * 100}`;
   return formattedTime(time);
 };
 
-const formatTemp = (d) => `${(d - 273.15).toFixed(2)}°C`;
+const formatTemp = (d) => `${d}°C`;
 
 const LineViz01 = ({
   data,
