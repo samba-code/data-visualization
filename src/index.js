@@ -12,7 +12,8 @@ const GlobalStyle = createGlobalStyle`
     background: ${(props) => lighten("0.5", props.theme.neutral)};
     color: ${(props) => darken("0.1", props.theme.primary)};
     box-sizing: border-box;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "museo-sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
   }
 `;
 

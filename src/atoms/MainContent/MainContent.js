@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 const StyledMain = styled.main`
   width: 95%;
   max-width: 1000px;
+  background: white;
 `;
 
 const MainContent = ({ children }) => <StyledMain>{children}</StyledMain>;

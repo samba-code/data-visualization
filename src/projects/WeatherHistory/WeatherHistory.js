@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { parseISO, getYear, getMonth } from "date-fns";
+import { parseISO, getYear, getMonth, format } from "date-fns";
 import { range } from "lodash";
+import styled from "styled-components";
 
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
 import Heading1 from "../../atoms/Heading1/Heading1";
+import Heading2 from "../../atoms/Heading2/Heading2";
 import Paragraph from "../../atoms/Paragraph/Paragraph";
 import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
 import MainContent from "../../atoms/MainContent/MainContent";
@@ -17,6 +19,19 @@ import Logo from "../../atoms/Logo/Logo";
 import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, START_DATE, END_DATE } from "./constants.js";
 import * as d3 from "d3";
+
+const Controls = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+const Label = styled.label`
+  margin: 12px 0 4px 0;
+  font-family: "museo-sans", sans-serif;
+  font-weight: 700;
+`;
 
 const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) + 1, 1);
 const months = [
@@ -88,10 +103,22 @@ const WeatherHistory = () => {
   const yAccessor = weatherMeasures[currentMeasure].accessor;
   const tickFormat = weatherMeasures[currentMeasure].format;
   const yLabel = weatherMeasures[currentMeasure].label;
+
+  const chartTitle = `${yLabel} in London between ${format(dateStart, "MM/dd/yyyy")} and ${format(dateEnd, "MM/dd/yyyy")}`;
+
   return (
     <PageWrapper>
       <MainContent>
         <Header><Heading1>London Weather from 1980 to 2020</Heading1></Header>
+        <div>
+          <Paragraph>
+            This chart shows the weather in London from 1980 to 2020. Use the weather data select dropdown to view the chart by weather type and the date pickers to select a date range. Data for this chart was sourced from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">Open Weather</a>. This chart was created using React and D3.
+      </Paragraph>
+          <Paragraph>
+            If you need a custom interactive data visualisation for your project contact <a href="mailto:hello@sambacode.net" >hello@sambacode.net</a>.
+      </Paragraph>
+      <Heading2>{chartTitle}</Heading2>
+        </div>
         {isLoading ? (
           <Loading id="loading">Loading weather data...</Loading>
         ) : (
@@ -106,13 +133,14 @@ const WeatherHistory = () => {
               tickFormat={tickFormat}
             />
           )}
-        <label htmlFor="weather-select">Select weather data</label>
+        <Controls>
+        <Label htmlFor="weather-select">Select weather data</Label>
         <select id="weather-select" onChange={onSelectChange} value={currentMeasure}>
           {Object.values(weatherMeasures).map(({ label }) => {
             return <option key={label}>{label}</option>;
           })}
         </select>
-        <label>Select start date</label>
+        <Label>Select start date</Label>
         <DatePicker
           renderCustomHeader={({
             date,
@@ -165,7 +193,7 @@ const WeatherHistory = () => {
           selected={dateStart}
           onChange={date => setDateStart(date)}
         />
-        <label>Select end date</label>
+        <Label>Select end date</Label>
         <DatePicker
           renderCustomHeader={({
             date,
@@ -218,14 +246,7 @@ const WeatherHistory = () => {
           selected={dateEnd}
           onChange={date => setDateEnd(date)}
         />
-        <div>
-          <Paragraph>
-            This chart shows the weather in London from 1980 to 2020. Use the weather data select dropdown to view the chart by weather type and the date pickers to select a date range. Data for this chart was sourced from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">Open Weather</a>.
-      </Paragraph>
-          <Paragraph>
-            If you need a custom interactive data visualisation for your project contact <a href="mailto:hello@sambacode.net" >hello@sambacode.net</a>.
-      </Paragraph>
-        </div>
+        </Controls>
         <Footer>
         <Logo />
         </Footer>
