@@ -8,25 +8,31 @@ import { range } from "lodash";
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
 import Heading1 from "../../atoms/Heading1/Heading1";
+import Paragraph from "../../atoms/Paragraph/Paragraph";
+import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
+import MainContent from "../../atoms/MainContent/MainContent";
+import Header from "../../atoms/Header/Header";
+import Footer from "../../atoms/Footer/Footer";
+import Logo from "../../atoms/Logo/Logo";
 import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, START_DATE, END_DATE } from "./constants.js";
 import * as d3 from "d3";
 
 const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) + 1, 1);
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 
 const getWeatherHistory = async () => {
   const dataURL = "https://data.sambacode.net/weather-history-london.json";
@@ -83,132 +89,148 @@ const WeatherHistory = () => {
   const tickFormat = weatherMeasures[currentMeasure].format;
   const yLabel = weatherMeasures[currentMeasure].label;
   return (
-    <div>
-      <Heading1>London Weather from 1980 to 2020</Heading1>
-      {isLoading ? (
-        <Loading id="loading">Loading weather data...</Loading>
-      ) : (
-        <LineViz01
-          data={filteredChartData}
-          xAccessor={xAccessor}
-          yAccessor={yAccessor}
-          yLabel={yLabel}
-          xLabel=""
-          numberOfTicksX={12}
-          numberOfTicksY={6}
-          tickFormat={tickFormat}
+    <PageWrapper>
+      <MainContent>
+        <Header><Heading1>London Weather from 1980 to 2020</Heading1></Header>
+        {isLoading ? (
+          <Loading id="loading">Loading weather data...</Loading>
+        ) : (
+            <LineViz01
+              data={filteredChartData}
+              xAccessor={xAccessor}
+              yAccessor={yAccessor}
+              yLabel={yLabel}
+              xLabel=""
+              numberOfTicksX={12}
+              numberOfTicksY={6}
+              tickFormat={tickFormat}
+            />
+          )}
+        <label htmlFor="weather-select">Select weather data</label>
+        <select id="weather-select" onChange={onSelectChange} value={currentMeasure}>
+          {Object.values(weatherMeasures).map(({ label }) => {
+            return <option key={label}>{label}</option>;
+          })}
+        </select>
+        <label>Select start date</label>
+        <DatePicker
+          renderCustomHeader={({
+            date,
+            changeYear,
+            changeMonth,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled
+          }) => (
+            <div
+              style={{
+                margin: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                {"<"}
+              </button>
+              <select
+                value={getYear(date)}
+                onChange={({ target: { value } }) => changeYear(value)}
+              >
+                {years.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={months[getMonth(date)]}
+                onChange={({ target: { value } }) =>
+                  changeMonth(months.indexOf(value))
+                }
+              >
+                {months.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+
+              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                {">"}
+              </button>
+            </div>
+          )}
+          selected={dateStart}
+          onChange={date => setDateStart(date)}
         />
-      )}
-      <select onChange={onSelectChange} value={currentMeasure}>
-        {Object.values(weatherMeasures).map(({ label }) => {
-          return <option key={label}>{label}</option>;
-        })}
-      </select>
-      <DatePicker
-      renderCustomHeader={({
-        date,
-        changeYear,
-        changeMonth,
-        decreaseMonth,
-        increaseMonth,
-        prevMonthButtonDisabled,
-        nextMonthButtonDisabled
-      }) => (
-        <div
-          style={{
-            margin: 10,
-            display: "flex",
-            justifyContent: "center"
-          }}
-        >
-          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-            {"<"}
-          </button>
-          <select
-            value={getYear(date)}
-            onChange={({ target: { value } }) => changeYear(value)}
-          >
-            {years.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+        <label>Select end date</label>
+        <DatePicker
+          renderCustomHeader={({
+            date,
+            changeYear,
+            changeMonth,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled
+          }) => (
+            <div
+              style={{
+                margin: 10,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                {"<"}
+              </button>
+              <select
+                value={getYear(date)}
+                onChange={({ target: { value } }) => changeYear(value)}
+              >
+                {years.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            value={months[getMonth(date)]}
-            onChange={({ target: { value } }) =>
-              changeMonth(months.indexOf(value))
-            }
-          >
-            {months.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+              <select
+                value={months[getMonth(date)]}
+                onChange={({ target: { value } }) =>
+                  changeMonth(months.indexOf(value))
+                }
+              >
+                {months.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-            {">"}
-          </button>
+              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                {">"}
+              </button>
+            </div>
+          )}
+          selected={dateEnd}
+          onChange={date => setDateEnd(date)}
+        />
+        <div>
+          <Paragraph>
+            This chart shows the weather in London from 1980 to 2020. Use the weather data select dropdown to view the chart by weather type and the date pickers to select a date range. Data for this chart was sourced from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">Open Weather</a>.
+      </Paragraph>
+          <Paragraph>
+            If you need a custom interactive data visualisation for your project contact <a href="mailto:hello@sambacode.net" >hello@sambacode.net</a>.
+      </Paragraph>
         </div>
-      )}
-      selected={dateStart}
-      onChange={date => setDateStart(date)}
-    />
-    <DatePicker
-      renderCustomHeader={({
-        date,
-        changeYear,
-        changeMonth,
-        decreaseMonth,
-        increaseMonth,
-        prevMonthButtonDisabled,
-        nextMonthButtonDisabled
-      }) => (
-        <div
-          style={{
-            margin: 10,
-            display: "flex",
-            justifyContent: "center"
-          }}
-        >
-          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-            {"<"}
-          </button>
-          <select
-            value={getYear(date)}
-            onChange={({ target: { value } }) => changeYear(value)}
-          >
-            {years.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={months[getMonth(date)]}
-            onChange={({ target: { value } }) =>
-              changeMonth(months.indexOf(value))
-            }
-          >
-            {months.map(option => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-
-          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-            {">"}
-          </button>
-        </div>
-      )}
-      selected={dateEnd}
-      onChange={date => setDateEnd(date)}
-    />
-    </div>
+        <Footer>
+        <Logo />
+        </Footer>
+      </MainContent>
+    </PageWrapper>
   );
 };
 
