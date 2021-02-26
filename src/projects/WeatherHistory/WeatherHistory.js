@@ -28,16 +28,11 @@ const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) +
     "December"
   ];
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const getWeatherHistory = async () => {
   // console.time("json");
   // const dataURL = "https://data.sambacode.net/weather-data-london.json";
-  const dataURL = "./weather-history-london.json";
+  const dataURL = "https://data.sambacode.net/weather-history-london.json";
   const weatherHistory = await d3.json(dataURL);
-  await delay(3000);
   // console.timeEnd("json");
   return weatherHistory;
 };
