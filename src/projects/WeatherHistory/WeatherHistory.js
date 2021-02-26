@@ -7,11 +7,16 @@ import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, START_DATE, END_DATE } from "./constants.js";
 import * as d3 from "d3";
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const getWeatherHistory = async () => {
   // console.time("json");
   // const dataURL = "https://data.sambacode.net/weather-data-london.json";
   const dataURL = "./weather-history-london.json";
   const weatherHistory = await d3.json(dataURL);
+  await delay(3000);
   // console.timeEnd("json");
   return weatherHistory;
 };

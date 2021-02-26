@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import styled from "styled-components";
 import { rem } from "polished";
 
@@ -8,6 +10,10 @@ const StyledLoading = styled.div`
   margin: 20px;
 `;
 
-const Loading = () => <StyledLoading>Loading data...</StyledLoading>;
+const Loading = ({ color }) => <StyledLoading><ScaleLoader color={color}/><p>Loading data</p></StyledLoading>;
+
+Loading.propTypes = {
+  color: PropTypes.string
+}
 
 export default Loading;
