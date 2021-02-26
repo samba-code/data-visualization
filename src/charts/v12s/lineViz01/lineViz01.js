@@ -3,17 +3,14 @@ import PropTypes from "prop-types";
 import * as d3 from "d3";
 
 import ChartSize from "../../chartElements/ChartSize/ChartSize";
-import ChartLine from "../../chartTypes/lineChart/ChartLine/ChartLine";
+import ChartLine from "../../chartTypes/ChartLine/ChartLine/ChartLine";
 import ChartWrapper from "../../chartElements/ChartWrapper/ChartWrapper";
 import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
 const formatDate = (time) => {
-  // console.log("time: ", time);
   const formattedTime = d3.timeFormat("%e/%m/%Y");
-  // console.log("formatted date: ", formattedTime);
-  // return `${formattedTime(time)}_${Math.random() * 100}`;
   return formattedTime(time);
 };
 
@@ -30,7 +27,6 @@ const LineViz01 = ({
   const [ref, dimensions] = useChartDimensions({
     height: 300,
   });
-  // console.log(d3.extent(data, yAccessor));
 
   const xScale = d3
     .scaleTime()

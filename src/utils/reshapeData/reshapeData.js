@@ -1,4 +1,9 @@
 /* global require */
+// This is a node script to transform data from 
+// openweathermap to more simple format.
+// It is intentionally not optimised for effiency 
+// because it only needs to be run once.
+
 const d3 = require("d3");
 const fs = require("fs");
 

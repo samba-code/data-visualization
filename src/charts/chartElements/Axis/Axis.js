@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 import { dimensionsPropsType } from "../../utils/utils";
-// import { useChartDimensions } from "../../utils/useChartDimensions";
 import "./axis.css";
 
 const axisComponentsByDimension = {
@@ -41,8 +40,6 @@ function AxisHorizontal({
   ...props
 }) {
   const ticks = scale.ticks(numberOfTicks);
-
-  // console.log("ticks: ", ticks);
 
   return (
     <g

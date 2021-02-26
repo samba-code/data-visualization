@@ -9,7 +9,7 @@ import WeatherHistory from "./projects/WeatherHistory/WeatherHistory";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${(props) => lighten("0.15", props.theme.neutral)};
+    background: ${(props) => lighten("0.5", props.theme.neutral)};
     color: ${(props) => darken("0.1", props.theme.primary)};
     box-sizing: border-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

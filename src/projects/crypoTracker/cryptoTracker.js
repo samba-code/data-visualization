@@ -1,2 +1,0 @@
-// CryptoTracker
-// Test file

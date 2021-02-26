@@ -29,19 +29,14 @@ const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) +
   ];
 
 const getWeatherHistory = async () => {
-  // console.time("json");
-  // const dataURL = "https://data.sambacode.net/weather-data-london.json";
   const dataURL = "https://data.sambacode.net/weather-history-london.json";
   const weatherHistory = await d3.json(dataURL);
-  // console.timeEnd("json");
   return weatherHistory;
 };
 
 const defaultMeasure = Object.values(weatherMeasures).filter(
   (x) => x.default
 )[0].label;
-// const findMeasure = (label) =>
-//   weatherMeasures.filter((x) => x.label === label)[0];
 
 // TODO - find a nicer way to reformat dates
 const convertDates = (dateString) => {
@@ -49,13 +44,7 @@ const convertDates = (dateString) => {
   return `${splitDate[1]}-${splitDate[0]}-${splitDate[2]}`;
 };
 
-const convertDatesYMD = (dateString) => {
-  const splitDate = dateString.split("-");
-  return `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`;
-};
-
 const WeatherHistory = () => {
-  // console.log("render");
   const [currentMeasure, setCurrentMeasure] = useState(defaultMeasure);
   const [chartData, setChartData] = useState([]);
   const [filteredChartData, setFilteredChartData] = useState([]);
@@ -75,13 +64,6 @@ const WeatherHistory = () => {
       const currentDate = new Date(convertDates(d.date));
       const startDate = dateStart;
       const endDate = dateEnd;
-      // console.log("currentDate: ", currentDate.getTime());
-      // console.log("startDate: ", startDate.getTime());
-      // console.log("endDate: ", endDate.getTime());
-      // console.log(
-      //   currentDate.getTime() >= startDate.getTime() &&
-      //     currentDate.getTime() <= endDate.getTime()
-      // );
       return (
         currentDate.getTime() >= startDate.getTime() &&
         currentDate.getTime() <= endDate.getTime()
@@ -90,34 +72,13 @@ const WeatherHistory = () => {
     setFilteredChartData(weatherDataBetweenDates);
   }, [dateStart, dateEnd]);
   const xAccessor = (d) => {
-    // console.log("d.date: ", d.date);
-    // console.log("new Date(d.date): ", new Date(convertDates(d.date)));
     const newDate = new Date(convertDates(d.date));
     return newDate;
   };
   const onSelectChange = (e) => {
-    // console.log("e.value: ", e.currentTarget.value);
-    // setCurrentMeasure(e.currentTarget.value);
     setCurrentMeasure(e.currentTarget.value);
-    // [e.currentTarget.value];
   };
-  const onDateStartChange = (e) => {
-    // console.log("e.value: ", e.currentTarget.value);
-    // setCurrentMeasure(e.currentTarget.value);
-    // console.log("start date changed: ", e.currentTarget.value);
-    setDateStart(e.currentTarget.value);
-    // [e.currentTarget.value];
-  };
-  const onDateEndChange = (e) => {
-    // console.log("e.value: ", e.currentTarget.value);
-    // setCurrentMeasure(e.currentTarget.value);
-    // console.log("end date changed: ", e.currentTarget.value);
-    setDateEnd(e.currentTarget.value);
-    // [e.currentTarget.value];
-  };
-  // console.log("chartData: ", chartData);
-  // console.log("currentMeasure: ", currentMeasure);
-  // console.log("weatherMeasures: ", weatherMeasures);
+
   const yAccessor = weatherMeasures[currentMeasure].accessor;
   const tickFormat = weatherMeasures[currentMeasure].format;
   const yLabel = weatherMeasures[currentMeasure].label;
@@ -143,8 +104,6 @@ const WeatherHistory = () => {
           return <option key={label}>{label}</option>;
         })}
       </select>
-      {/* <DatePicker selected={dateStart} onChange={date => setDateStart(date)} />
-      <DatePicker selected={dateEnd} onChange={date => setDateEnd(date)} /> */}
       <DatePicker
       renderCustomHeader={({
         date,
