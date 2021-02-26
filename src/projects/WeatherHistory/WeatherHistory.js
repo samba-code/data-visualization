@@ -1,11 +1,32 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { parseISO, getYear, getMonth } from "date-fns";
+import { range } from "lodash";
+
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, START_DATE, END_DATE } from "./constants.js";
 import * as d3 from "d3";
+
+const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) + 1, 1);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -44,8 +65,8 @@ const WeatherHistory = () => {
   const [chartData, setChartData] = useState([]);
   const [filteredChartData, setFilteredChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [dateStart, setDateStart] = useState("1980-01-01");
-  const [dateEnd, setDateEnd] = useState("2020-12-31");
+  const [dateStart, setDateStart] = useState(parseISO(START_DATE));
+  const [dateEnd, setDateEnd] = useState(parseISO(END_DATE));
   useEffect(() => {
     getWeatherHistory().then((d) => {
       console.log("get weather data");
@@ -57,8 +78,8 @@ const WeatherHistory = () => {
   useEffect(() => {
     const weatherDataBetweenDates = chartData.filter((d) => {
       const currentDate = new Date(convertDates(d.date));
-      const startDate = new Date(convertDatesYMD(dateStart));
-      const endDate = new Date(convertDatesYMD(dateEnd));
+      const startDate = dateStart;
+      const endDate = dateEnd;
       // console.log("currentDate: ", currentDate.getTime());
       // console.log("startDate: ", startDate.getTime());
       // console.log("endDate: ", endDate.getTime());
@@ -127,22 +148,112 @@ const WeatherHistory = () => {
           return <option key={label}>{label}</option>;
         })}
       </select>
-      <input
-        type="date"
-        placeholder="dd-mm-yyyy"
-        onChange={onDateStartChange}
-        value={dateStart}
-        min={START_DATE}
-        max={END_DATE}
-      />
-      <input
-        type="date"
-        placeholder="dd-mm-yyyy"
-        onChange={onDateEndChange}
-        value={dateEnd}
-        min={START_DATE}
-        max={END_DATE}
-      />
+      {/* <DatePicker selected={dateStart} onChange={date => setDateStart(date)} />
+      <DatePicker selected={dateEnd} onChange={date => setDateEnd(date)} /> */}
+      <DatePicker
+      renderCustomHeader={({
+        date,
+        changeYear,
+        changeMonth,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled
+      }) => (
+        <div
+          style={{
+            margin: 10,
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+            {"<"}
+          </button>
+          <select
+            value={getYear(date)}
+            onChange={({ target: { value } }) => changeYear(value)}
+          >
+            {years.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={months[getMonth(date)]}
+            onChange={({ target: { value } }) =>
+              changeMonth(months.indexOf(value))
+            }
+          >
+            {months.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+            {">"}
+          </button>
+        </div>
+      )}
+      selected={dateStart}
+      onChange={date => setDateStart(date)}
+    />
+    <DatePicker
+      renderCustomHeader={({
+        date,
+        changeYear,
+        changeMonth,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled
+      }) => (
+        <div
+          style={{
+            margin: 10,
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+            {"<"}
+          </button>
+          <select
+            value={getYear(date)}
+            onChange={({ target: { value } }) => changeYear(value)}
+          >
+            {years.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={months[getMonth(date)]}
+            onChange={({ target: { value } }) =>
+              changeMonth(months.indexOf(value))
+            }
+          >
+            {months.map(option => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+            {">"}
+          </button>
+        </div>
+      )}
+      selected={dateEnd}
+      onChange={date => setDateEnd(date)}
+    />
     </div>
   );
 };
