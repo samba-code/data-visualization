@@ -47,5 +47,5 @@ export const weatherMeasures = {
   },
 };
 
-export const START_DATE = "1980-01-01";
-export const END_DATE = "2020-12-31";
+export const EARLIEST_DATE = "1980-01-01";
+export const LAST_DATE = "2020-12-31";

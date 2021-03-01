@@ -5,17 +5,17 @@ import PropTypes from "prop-types";
 
 const StyledMain = styled.main`
   width: 95%;
-  max-width: 1000px;
+  max-width: 1024px;
   background: white;
 `;
 
 const MainContent = ({ children }) => <StyledMain>{children}</StyledMain>;
 
 MainContent.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ]).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default MainContent;

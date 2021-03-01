@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { parseISO, getYear, getMonth, format } from "date-fns";
+import { parseISO, getYear, getMonth, format, compareAsc } from "date-fns";
 import { range } from "lodash";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
@@ -18,7 +18,7 @@ import Header from "../../atoms/Header/Header";
 import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
 import Loading from "../../atoms/Loading/Loading";
-import { weatherMeasures, START_DATE, END_DATE } from "./constants.js";
+import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
 import * as d3 from "d3";
 
 const Controls = styled.div`
@@ -35,8 +35,8 @@ const Label = styled.label`
 `;
 
 const years = range(
-  getYear(parseISO(START_DATE)),
-  getYear(parseISO(END_DATE)) + 1,
+  getYear(parseISO(EARLIEST_DATE)),
+  getYear(parseISO(LAST_DATE)) + 1,
   1
 );
 const months = [
@@ -70,13 +70,41 @@ const convertDates = (dateString) => {
   return `${splitDate[1]}-${splitDate[0]}-${splitDate[2]}`;
 };
 
+const DATE_ERROR = "Start date must be before end date";
+
 const WeatherHistory = () => {
   const [currentMeasure, setCurrentMeasure] = useState(defaultMeasure);
   const [chartData, setChartData] = useState([]);
   const [filteredChartData, setFilteredChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [dateStart, setDateStart] = useState(parseISO(START_DATE));
-  const [dateEnd, setDateEnd] = useState(parseISO(END_DATE));
+  const [dateStart, setDateStart] = useState(parseISO(EARLIEST_DATE));
+  const [dateEnd, setDateEnd] = useState(parseISO(LAST_DATE));
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const changeStartDate = (newStartDate) => {
+    if (compareAsc(dateEnd, newStartDate) > 0) {
+      setDateStart(newStartDate);
+      setErrorMessage("");
+    } else {
+      setErrorMessage(DATE_ERROR);
+    }
+  };
+
+  const changeEndDate = (newEndDate) => {
+    if (compareAsc(newEndDate, dateStart) > 0) {
+      setDateEnd(newEndDate);
+      setErrorMessage("");
+    } else {
+      setErrorMessage(DATE_ERROR);
+    }
+  };
+
+  const isWithinDates = (date) => {
+    return (
+      compareAsc(new Date(date), new Date(EARLIEST_DATE)) > -1 &&
+      compareAsc(new Date(LAST_DATE), new Date(date)) > -1
+    );
+  };
   useEffect(() => {
     getWeatherHistory().then((d) => {
       console.log("get weather data");
@@ -155,7 +183,7 @@ const WeatherHistory = () => {
             data={filteredChartData}
             xAccessor={xAccessor}
             yAccessor={yAccessor}
-            yLabel={yLabel}
+            yLabel=""
             xLabel=""
             numberOfTicksX={12}
             numberOfTicksY={6}
@@ -230,7 +258,8 @@ const WeatherHistory = () => {
               </div>
             )}
             selected={dateStart}
-            onChange={(date) => setDateStart(date)}
+            onChange={(date) => changeStartDate(date)}
+            filterDate={isWithinDates}
           />
           <Label>Select end date</Label>
           <DatePicker
@@ -289,8 +318,10 @@ const WeatherHistory = () => {
               </div>
             )}
             selected={dateEnd}
-            onChange={(date) => setDateEnd(date)}
+            onChange={(date) => changeEndDate(date)}
+            filterDate={isWithinDates}
           />
+          <div>{errorMessage}</div>
         </Controls>
       </MainContent>
       <Footer>
