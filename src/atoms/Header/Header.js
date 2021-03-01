@@ -11,7 +11,6 @@ const StyledHeader = styled.header`
   width: 100%;
   padding: 12px;
   background: ${(props) => props.theme.neutral};
-  margin-bottom: 20px;
 `;
 
 const Header = ({ children }) => <StyledHeader>{children}</StyledHeader>;

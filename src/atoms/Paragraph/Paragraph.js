@@ -8,8 +8,8 @@ const StyledPara = styled.p`
   font-size: ${rem("18px")};
   line-height: ${rem("22px")};
   color: ${(props) => props.theme.primary};
-  margin: 20px 0;
-  max-width: 620px;
+  margin: 20px 0 0 0;
+  max-width: 650px;
   font-family: "museo-sans", sans-serif;
   font-weight: 300;
 `;

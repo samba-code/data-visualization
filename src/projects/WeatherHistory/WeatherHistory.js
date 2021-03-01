@@ -6,7 +6,7 @@ import { parseISO, getYear, getMonth, format, compareAsc } from "date-fns";
 import { range } from "lodash";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
-import { rem } from "polished";
+import { rem, lighten } from "polished";
 
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
@@ -23,6 +23,21 @@ import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
 import * as d3 from "d3";
 
 import "./DatePicker.css";
+
+const IntroductionArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: ${(props) => lighten(0.2, props.theme.neutral)};
+  width: 100%;
+  padding: 10px 0 30px 0;
+`;
+
+const Introduction = styled.div`
+  width: 90%;
+  max-width: 1024px;
+`;
 
 const Controls = styled.div`
   display: flex;
@@ -169,28 +184,36 @@ const WeatherHistory = () => {
       <Header>
         <Heading1>LONDON WEATHER HISTORY 1980 - 2020</Heading1>
       </Header>
+      <IntroductionArea>
+        <Introduction>
+          <Paragraph>
+            This chart shows the weather history in London from 1980 to 2020.
+            Use the weather data select to view the chart by weather type and
+            the date pickers to select a date range. Data for this chart was
+            sourced from{" "}
+            <a
+              href="https://openweathermap.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Weather
+            </a>
+            .
+          </Paragraph>
+          <Paragraph>
+            If you need a custom interactive data visualisation for your project
+            contact{" "}
+            <Obfuscate
+              email="hello@sambacode.net"
+              aria-label="Email Samba Code"
+            >
+              hello@sambacode.net
+            </Obfuscate>
+            .
+          </Paragraph>
+        </Introduction>
+      </IntroductionArea>
       <MainContent>
-        <Paragraph>
-          This chart shows the weather history in London from 1980 to 2020. Use
-          the weather data select to view the chart by weather type and the date
-          pickers to select a date range. Data for this chart was sourced from{" "}
-          <a
-            href="https://openweathermap.org/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open Weather
-          </a>
-          .
-        </Paragraph>
-        <Paragraph>
-          If you need a custom interactive data visualisation for your project
-          contact{" "}
-          <Obfuscate email="hello@sambacode.net" aria-label="Email Samba Code">
-            hello@sambacode.net
-          </Obfuscate>
-          .
-        </Paragraph>
         <Heading2>{chartTitle}</Heading2>
         <Controls>
           <InputContainer>
