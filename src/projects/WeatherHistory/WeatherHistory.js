@@ -116,10 +116,10 @@ const WeatherHistory = () => {
 
   return (
     <PageWrapper>
+      <Header>
+        <Heading1>London Weather from 1980 to 2020</Heading1>
+      </Header>
       <MainContent>
-        <Header>
-          <Heading1>London Weather from 1980 to 2020</Heading1>
-        </Header>
         <div>
           <Paragraph>
             This chart shows the weather in London from 1980 to 2020. Use the

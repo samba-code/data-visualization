@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { rem, lighten } from "polished";
+import { rem } from "polished";
 
 import PropTypes from "prop-types";
 
 const StyledHeading1 = styled.h1`
   font-size: ${rem("24px")};
-  color: ${(props) => lighten(0.1, props.theme.primary)};
+  color: white;
   font-weight: bold;
   font-family: "museo-sans", sans-serif;
   font-weight: 700;

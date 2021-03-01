@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-
 import PropTypes from "prop-types";
 
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  overflow-x: hidden;
 `;
 
 const PageWrapper = ({ children }) => <StyledDiv>{children}</StyledDiv>;

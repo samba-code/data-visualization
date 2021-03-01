@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-family: "museo-sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
+    box-sizing: border-box;
   }
 `;
 
