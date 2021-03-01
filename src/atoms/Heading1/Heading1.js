@@ -5,7 +5,7 @@ import { rem } from "polished";
 import PropTypes from "prop-types";
 
 const StyledHeading1 = styled.h1`
-  font-size: ${rem("24px")};
+  font-size: ${rem("28px")};
   color: white;
   font-weight: bold;
   font-family: "museo-sans", sans-serif;
