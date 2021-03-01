@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 const StyledHeading2 = styled.h2`
   font-size: ${rem("22px")};
-  line-height: ${rem("24px")};
+  line-height: ${rem("26px")};
   color: ${(props) => lighten(0.1, props.theme.primary)};
   font-weight: bold;
   font-family: "museo-sans", sans-serif;

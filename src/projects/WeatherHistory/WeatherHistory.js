@@ -29,17 +29,21 @@ const Controls = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  flex-wrap: wrap;
   margin: 20px 0 0 0;
 `;
 
 const Label = styled.label`
+  display: block;
+  font-size: ${rem("14px")};
   margin: 12px 12px 4px 0;
   font-family: "museo-sans", sans-serif;
   font-weight: 700;
+  min-width: 80px;
 `;
 
 const InputContainer = styled.div`
-  margin: 0 25px 0 0;
+  margin: 0 25px 6px 0;
 `;
 
 const SelectBox = styled.select`
@@ -49,6 +53,7 @@ const SelectBox = styled.select`
   font-weight: 300;
   border: 1px solid #aaa;
   border-radius: 6px;
+  min-height: 20px;
 `;
 
 const years = range(
@@ -162,7 +167,7 @@ const WeatherHistory = () => {
   return (
     <PageWrapper>
       <Header>
-        <Heading1>London Weather from 1980 to 2020</Heading1>
+        <Heading1>LONDON WEATHER HISTORY 1980 - 2020</Heading1>
       </Header>
       <MainContent>
         <Paragraph>

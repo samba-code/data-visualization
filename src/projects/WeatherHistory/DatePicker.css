@@ -5,4 +5,5 @@
   font-weight: 300;
   border: 1px solid #aaa;
   border-radius: 6px;
+  min-height: 20px;
 }
