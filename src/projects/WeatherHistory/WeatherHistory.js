@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { parseISO, getYear, getMonth, format } from "date-fns";
 import { range } from "lodash";
 import styled from "styled-components";
+import Obfuscate from "react-obfuscate";
 
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
@@ -33,7 +34,11 @@ const Label = styled.label`
   font-weight: 700;
 `;
 
-const years = range(getYear(parseISO(START_DATE)), getYear(parseISO(END_DATE)) + 1, 1);
+const years = range(
+  getYear(parseISO(START_DATE)),
+  getYear(parseISO(END_DATE)) + 1,
+  1
+);
 const months = [
   "January",
   "February",
@@ -46,7 +51,7 @@ const months = [
   "September",
   "October",
   "November",
-  "December"
+  "December",
 ];
 
 const getWeatherHistory = async () => {
@@ -104,153 +109,193 @@ const WeatherHistory = () => {
   const tickFormat = weatherMeasures[currentMeasure].format;
   const yLabel = weatherMeasures[currentMeasure].label;
 
-  const chartTitle = `${yLabel} in London between ${format(dateStart, "MM/dd/yyyy")} and ${format(dateEnd, "MM/dd/yyyy")}`;
+  const chartTitle = `${yLabel} in London between ${format(
+    dateStart,
+    "MM/dd/yyyy"
+  )} and ${format(dateEnd, "MM/dd/yyyy")}`;
 
   return (
     <PageWrapper>
       <MainContent>
-        <Header><Heading1>London Weather from 1980 to 2020</Heading1></Header>
+        <Header>
+          <Heading1>London Weather from 1980 to 2020</Heading1>
+        </Header>
         <div>
           <Paragraph>
-            This chart shows the weather in London from 1980 to 2020. Use the weather data select dropdown to view the chart by weather type and the date pickers to select a date range. Data for this chart was sourced from <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">Open Weather</a>. This chart was created using React and D3.
-      </Paragraph>
+            This chart shows the weather in London from 1980 to 2020. Use the
+            weather data select dropdown to view the chart by weather type and
+            the date pickers to select a date range. Data for this chart was
+            sourced from{" "}
+            <a
+              href="https://openweathermap.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Weather
+            </a>
+            .
+          </Paragraph>
           <Paragraph>
-            If you need a custom interactive data visualisation for your project contact <a href="mailto:hello@sambacode.net" >hello@sambacode.net</a>.
-      </Paragraph>
-      <Heading2>{chartTitle}</Heading2>
+            If you need a custom interactive data visualisation for your project
+            contact{" "}
+            <Obfuscate
+              email="hello@sambacode.net"
+              aria-label="Email Samba Code"
+            >
+              hello@sambacode.net
+            </Obfuscate>
+            .
+          </Paragraph>
+          <Heading2>{chartTitle}</Heading2>
         </div>
         {isLoading ? (
           <Loading id="loading">Loading weather data...</Loading>
         ) : (
-            <LineViz01
-              data={filteredChartData}
-              xAccessor={xAccessor}
-              yAccessor={yAccessor}
-              yLabel={yLabel}
-              xLabel=""
-              numberOfTicksX={12}
-              numberOfTicksY={6}
-              tickFormat={tickFormat}
-            />
-          )}
+          <LineViz01
+            data={filteredChartData}
+            xAccessor={xAccessor}
+            yAccessor={yAccessor}
+            yLabel={yLabel}
+            xLabel=""
+            numberOfTicksX={12}
+            numberOfTicksY={6}
+            tickFormat={tickFormat}
+          />
+        )}
         <Controls>
-        <Label htmlFor="weather-select">Select weather data</Label>
-        <select id="weather-select" onChange={onSelectChange} value={currentMeasure}>
-          {Object.values(weatherMeasures).map(({ label }) => {
-            return <option key={label}>{label}</option>;
-          })}
-        </select>
-        <Label>Select start date</Label>
-        <DatePicker
-          renderCustomHeader={({
-            date,
-            changeYear,
-            changeMonth,
-            decreaseMonth,
-            increaseMonth,
-            prevMonthButtonDisabled,
-            nextMonthButtonDisabled
-          }) => (
-            <div
-              style={{
-                margin: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                {"<"}
-              </button>
-              <select
-                value={getYear(date)}
-                onChange={({ target: { value } }) => changeYear(value)}
+          <Label htmlFor="weather-select">Select weather data</Label>
+          <select
+            id="weather-select"
+            onChange={onSelectChange}
+            value={currentMeasure}
+          >
+            {Object.values(weatherMeasures).map(({ label }) => {
+              return <option key={label}>{label}</option>;
+            })}
+          </select>
+          <Label>Select start date</Label>
+          <DatePicker
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+              prevMonthButtonDisabled,
+              nextMonthButtonDisabled,
+            }) => (
+              <div
+                style={{
+                  margin: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                {years.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <button
+                  onClick={decreaseMonth}
+                  disabled={prevMonthButtonDisabled}
+                >
+                  {"<"}
+                </button>
+                <select
+                  value={getYear(date)}
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {years.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <select
-                value={months[getMonth(date)]}
-                onChange={({ target: { value } }) =>
-                  changeMonth(months.indexOf(value))
-                }
+                <select
+                  value={months[getMonth(date)]}
+                  onChange={({ target: { value } }) =>
+                    changeMonth(months.indexOf(value))
+                  }
+                >
+                  {months.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  onClick={increaseMonth}
+                  disabled={nextMonthButtonDisabled}
+                >
+                  {">"}
+                </button>
+              </div>
+            )}
+            selected={dateStart}
+            onChange={(date) => setDateStart(date)}
+          />
+          <Label>Select end date</Label>
+          <DatePicker
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+              prevMonthButtonDisabled,
+              nextMonthButtonDisabled,
+            }) => (
+              <div
+                style={{
+                  margin: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                {months.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <button
+                  onClick={decreaseMonth}
+                  disabled={prevMonthButtonDisabled}
+                >
+                  {"<"}
+                </button>
+                <select
+                  value={getYear(date)}
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {years.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                {">"}
-              </button>
-            </div>
-          )}
-          selected={dateStart}
-          onChange={date => setDateStart(date)}
-        />
-        <Label>Select end date</Label>
-        <DatePicker
-          renderCustomHeader={({
-            date,
-            changeYear,
-            changeMonth,
-            decreaseMonth,
-            increaseMonth,
-            prevMonthButtonDisabled,
-            nextMonthButtonDisabled
-          }) => (
-            <div
-              style={{
-                margin: 10,
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-                {"<"}
-              </button>
-              <select
-                value={getYear(date)}
-                onChange={({ target: { value } }) => changeYear(value)}
-              >
-                {years.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <select
+                  value={months[getMonth(date)]}
+                  onChange={({ target: { value } }) =>
+                    changeMonth(months.indexOf(value))
+                  }
+                >
+                  {months.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <select
-                value={months[getMonth(date)]}
-                onChange={({ target: { value } }) =>
-                  changeMonth(months.indexOf(value))
-                }
-              >
-                {months.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-
-              <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-                {">"}
-              </button>
-            </div>
-          )}
-          selected={dateEnd}
-          onChange={date => setDateEnd(date)}
-        />
+                <button
+                  onClick={increaseMonth}
+                  disabled={nextMonthButtonDisabled}
+                >
+                  {">"}
+                </button>
+              </div>
+            )}
+            selected={dateEnd}
+            onChange={(date) => setDateEnd(date)}
+          />
         </Controls>
-        <Footer>
-        <Logo />
-        </Footer>
       </MainContent>
+      <Footer>
+        <Logo />
+      </Footer>
     </PageWrapper>
   );
 };

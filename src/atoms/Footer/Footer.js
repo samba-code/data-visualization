@@ -4,9 +4,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const StyledFooter = styled.footer`
-  position: absolute;
-  bottom: 0;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,15 +12,16 @@ const StyledFooter = styled.footer`
   color: white;
   background: black;
   padding: 10px;
+  margin-top: 60px;
 `;
 
 const Footer = ({ children }) => <StyledFooter>{children}</StyledFooter>;
 
 Footer.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ]).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default Footer;
