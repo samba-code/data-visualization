@@ -4,12 +4,22 @@ import * as d3 from "d3";
 import { accessorPropsType } from "../../../utils/utils";
 import "./ChartLine.css";
 
+const defaultData = [
+  {
+    x: 0,
+    y: 0,
+  },
+  {
+    x: 100,
+    y: 0,
+  },
+];
+
 const ChartLine = ({
   type,
   data,
   xAccessor,
   yAccessor,
-  y0Accessor,
   interpolation,
   strokeColor,
   ...props
@@ -18,10 +28,6 @@ const ChartLine = ({
     .x((d) => xAccessor(d))
     .y((d) => yAccessor(d))
     .curve(interpolation);
-
-  if (type === "area") {
-    lineGenerator.y0(y0Accessor).y1(yAccessor);
-  }
 
   return (
     <path
@@ -40,14 +46,15 @@ ChartLine.propTypes = {
   data: PropTypes.array,
   xAccessor: accessorPropsType,
   yAccessor: accessorPropsType,
-  y0Accessor: accessorPropsType,
   interpolation: PropTypes.func,
   strokeColor: PropTypes.string,
 };
 
 ChartLine.defaultProps = {
   type: "line",
-  y0Accessor: 0,
+  data: defaultData,
+  xAccessor: (d) => d.x,
+  yAccessor: (d) => d.y,
   interpolation: d3.curveMonotoneX,
   strokeColor: "black",
 };

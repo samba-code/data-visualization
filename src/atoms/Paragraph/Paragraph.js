@@ -5,11 +5,11 @@ import { rem } from "polished";
 import PropTypes from "prop-types";
 
 const StyledPara = styled.p`
-  font-size: ${rem("14px")};
-  line-height: ${rem("16px")};
+  font-size: ${rem("18px")};
+  line-height: ${rem("22px")};
   color: ${(props) => props.theme.primary};
   margin: 20px 0;
-  max-width: 500px;
+  max-width: 620px;
   font-family: "museo-sans", sans-serif;
   font-weight: 300;
 `;

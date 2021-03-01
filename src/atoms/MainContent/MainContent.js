@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const StyledMain = styled.main`
-  width: 95%;
+  width: 90%;
   max-width: 1024px;
   background: white;
 `;

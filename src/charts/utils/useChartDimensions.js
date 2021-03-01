@@ -6,7 +6,7 @@ import ResizeObserver from "resize-observer-polyfill";
 export const combineChartDimensions = (dimensions) => {
   let parsedDimensions = {
     marginTop: 40,
-    marginRight: 80,
+    marginRight: 0,
     marginBottom: 40,
     marginLeft: 30,
     ...dimensions,

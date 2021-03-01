@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { Reset } from "styled-reset";
-import { darken, lighten } from "polished";
+import { darken } from "polished";
 
 import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -9,7 +9,7 @@ import WeatherHistory from "./projects/WeatherHistory/WeatherHistory";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${(props) => lighten("0.5", props.theme.neutral)};
+    background: black;
     color: ${(props) => darken("0.1", props.theme.primary)};
     box-sizing: border-box;
     font-family: "museo-sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

@@ -1,17 +1,17 @@
 export const weatherMeasures = {
-  "Average Temperature": {
-    label: "Average Temperature",
+  "Average temperature": {
+    label: "Average temperature",
     accessor: (d) => Number(d.temp),
     format: (d) => `${d}°C`,
     default: true,
   },
-  "Max Temperature": {
-    label: "Max Temperature",
+  "Maximum temperature": {
+    label: "Maximum temperature",
     format: (d) => `${d}°C`,
     accessor: (d) => Number(d.tempMax),
   },
-  "Min Temperature": {
-    label: "Min Temperature",
+  "Minimum temperature": {
+    label: "Minimum temperature",
     format: (d) => `${d}°C`,
     accessor: (d) => Number(d.tempMin),
   },
@@ -25,8 +25,8 @@ export const weatherMeasures = {
     format: (d) => `${d}mm`,
     accessor: (d) => Number(d.snow),
   },
-  "Wind Speed": {
-    label: "Wind Speed",
+  "Wind speed": {
+    label: "Wind speed",
     format: (d) => `${d}m/s`,
     accessor: (d) => Number(d.wind),
   },

@@ -11,6 +11,7 @@ const StyledHeader = styled.header`
   width: 100%;
   padding: 12px;
   background: grey;
+  margin-bottom: 20px;
 `;
 
 const Header = ({ children }) => <StyledHeader>{children}</StyledHeader>;

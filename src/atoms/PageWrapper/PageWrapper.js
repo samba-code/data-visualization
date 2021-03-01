@@ -9,6 +9,7 @@ const StyledDiv = styled.div`
   align-items: center;
   width: 100%;
   overflow-x: hidden;
+  background: white;
 `;
 
 const PageWrapper = ({ children }) => <StyledDiv>{children}</StyledDiv>;

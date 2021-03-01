@@ -60,7 +60,7 @@ function AxisHorizontal({
           />
           <text
             className="Axis__tick"
-            transform={`translate(${scale(tick)}, 25)`}
+            transform={`translate(${scale(tick) - 4}, 40) rotate(90)`}
           >
             {formatTick(tick)}
           </text>
@@ -116,6 +116,13 @@ function AxisVertical({
             y2={scale(tick)}
             x1={0}
             x2={-5}
+          />
+          <line
+            className="Chart__line"
+            y1={scale(tick)}
+            y2={scale(tick)}
+            x1={0}
+            x2={dimensions.boundedWidth}
           />
           <text
             className="Axis__tick"

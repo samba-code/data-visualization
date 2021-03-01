@@ -7,13 +7,28 @@ import { rem } from "polished";
 const StyledLoading = styled.div`
   font-size: ${rem("18px")};
   color: black;
-  margin: 20px;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 `;
 
-const Loading = ({ color }) => <StyledLoading><ScaleLoader color={color}/><p>Loading data</p></StyledLoading>;
+const LoadingText = styled.p`
+  margin-top: 10px;
+`;
+
+const Loading = ({ color }) => (
+  <StyledLoading>
+    <ScaleLoader color={color} />
+    <LoadingText>Loading data</LoadingText>
+  </StyledLoading>
+);
 
 Loading.propTypes = {
-  color: PropTypes.string
-}
+  color: PropTypes.string,
+};
 
 export default Loading;

@@ -6,6 +6,7 @@ import { parseISO, getYear, getMonth, format, compareAsc } from "date-fns";
 import { range } from "lodash";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
+import { rem } from "polished";
 
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
@@ -21,17 +22,33 @@ import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
 import * as d3 from "d3";
 
+import "./DatePicker.css";
+
 const Controls = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  margin: 20px 0 0 0;
 `;
 
 const Label = styled.label`
-  margin: 12px 0 4px 0;
+  margin: 12px 12px 4px 0;
   font-family: "museo-sans", sans-serif;
   font-weight: 700;
+`;
+
+const InputContainer = styled.div`
+  margin: 0 25px 0 0;
+`;
+
+const SelectBox = styled.select`
+  padding: 3px;
+  font-size: ${rem("16px")};
+  font-family: "museo-sans", sans-serif;
+  font-weight: 300;
+  border: 1px solid #aaa;
+  border-radius: 6px;
 `;
 
 const years = range(
@@ -64,8 +81,8 @@ const defaultMeasure = Object.values(weatherMeasures).filter(
   (x) => x.default
 )[0].label;
 
-// TODO - find a nicer way to reformat dates
 const convertDates = (dateString) => {
+  // Convert from DD-MM-YYYY to MM-DD-YYYY
   const splitDate = dateString.split("-");
   return `${splitDate[1]}-${splitDate[0]}-${splitDate[2]}`;
 };
@@ -139,8 +156,8 @@ const WeatherHistory = () => {
 
   const chartTitle = `${yLabel} in London between ${format(
     dateStart,
-    "MM/dd/yyyy"
-  )} and ${format(dateEnd, "MM/dd/yyyy")}`;
+    "do MMMM yyyy"
+  )} and ${format(dateEnd, "do MMMM yyyy")}`;
 
   return (
     <PageWrapper>
@@ -148,34 +165,169 @@ const WeatherHistory = () => {
         <Heading1>London Weather from 1980 to 2020</Heading1>
       </Header>
       <MainContent>
-        <div>
-          <Paragraph>
-            This chart shows the weather in London from 1980 to 2020. Use the
-            weather data select dropdown to view the chart by weather type and
-            the date pickers to select a date range. Data for this chart was
-            sourced from{" "}
-            <a
-              href="https://openweathermap.org/"
-              target="_blank"
-              rel="noreferrer"
+        <Paragraph>
+          This chart shows the weather history in London from 1980 to 2020. Use
+          the weather data select to view the chart by weather type and the date
+          pickers to select a date range. Data for this chart was sourced from{" "}
+          <a
+            href="https://openweathermap.org/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open Weather
+          </a>
+          .
+        </Paragraph>
+        <Paragraph>
+          If you need a custom interactive data visualisation for your project
+          contact{" "}
+          <Obfuscate email="hello@sambacode.net" aria-label="Email Samba Code">
+            hello@sambacode.net
+          </Obfuscate>
+          .
+        </Paragraph>
+        <Heading2>{chartTitle}</Heading2>
+        <Controls>
+          <InputContainer>
+            <Label htmlFor="weather-select">Weather data</Label>
+            <SelectBox
+              id="weather-select"
+              onChange={onSelectChange}
+              value={currentMeasure}
             >
-              Open Weather
-            </a>
-            .
-          </Paragraph>
-          <Paragraph>
-            If you need a custom interactive data visualisation for your project
-            contact{" "}
-            <Obfuscate
-              email="hello@sambacode.net"
-              aria-label="Email Samba Code"
-            >
-              hello@sambacode.net
-            </Obfuscate>
-            .
-          </Paragraph>
-          <Heading2>{chartTitle}</Heading2>
-        </div>
+              {Object.values(weatherMeasures).map(({ label }) => {
+                return <option key={label}>{label}</option>;
+              })}
+            </SelectBox>
+          </InputContainer>
+          <InputContainer>
+            <Label>Start date</Label>
+            <DatePicker
+              className="date-picker"
+              renderCustomHeader={({
+                date,
+                changeYear,
+                changeMonth,
+                decreaseMonth,
+                increaseMonth,
+                prevMonthButtonDisabled,
+                nextMonthButtonDisabled,
+              }) => (
+                <div
+                  style={{
+                    margin: 10,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button
+                    onClick={decreaseMonth}
+                    disabled={prevMonthButtonDisabled}
+                  >
+                    {"<"}
+                  </button>
+                  <select
+                    value={getYear(date)}
+                    onChange={({ target: { value } }) => changeYear(value)}
+                  >
+                    {years.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={months[getMonth(date)]}
+                    onChange={({ target: { value } }) =>
+                      changeMonth(months.indexOf(value))
+                    }
+                  >
+                    {months.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    onClick={increaseMonth}
+                    disabled={nextMonthButtonDisabled}
+                  >
+                    {">"}
+                  </button>
+                </div>
+              )}
+              selected={dateStart}
+              onChange={(date) => changeStartDate(date)}
+              filterDate={isWithinDates}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Label>End date</Label>
+            <DatePicker
+              className="date-picker"
+              renderCustomHeader={({
+                date,
+                changeYear,
+                changeMonth,
+                decreaseMonth,
+                increaseMonth,
+                prevMonthButtonDisabled,
+                nextMonthButtonDisabled,
+              }) => (
+                <div
+                  style={{
+                    margin: 10,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button
+                    onClick={decreaseMonth}
+                    disabled={prevMonthButtonDisabled}
+                  >
+                    {"<"}
+                  </button>
+                  <select
+                    value={getYear(date)}
+                    onChange={({ target: { value } }) => changeYear(value)}
+                  >
+                    {years.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={months[getMonth(date)]}
+                    onChange={({ target: { value } }) =>
+                      changeMonth(months.indexOf(value))
+                    }
+                  >
+                    {months.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    onClick={increaseMonth}
+                    disabled={nextMonthButtonDisabled}
+                  >
+                    {">"}
+                  </button>
+                </div>
+              )}
+              selected={dateEnd}
+              onChange={(date) => changeEndDate(date)}
+              filterDate={isWithinDates}
+            />
+          </InputContainer>
+          <div>{errorMessage}</div>
+        </Controls>
         {isLoading ? (
           <Loading id="loading">Loading weather data...</Loading>
         ) : (
@@ -190,139 +342,6 @@ const WeatherHistory = () => {
             tickFormat={tickFormat}
           />
         )}
-        <Controls>
-          <Label htmlFor="weather-select">Select weather data</Label>
-          <select
-            id="weather-select"
-            onChange={onSelectChange}
-            value={currentMeasure}
-          >
-            {Object.values(weatherMeasures).map(({ label }) => {
-              return <option key={label}>{label}</option>;
-            })}
-          </select>
-          <Label>Select start date</Label>
-          <DatePicker
-            renderCustomHeader={({
-              date,
-              changeYear,
-              changeMonth,
-              decreaseMonth,
-              increaseMonth,
-              prevMonthButtonDisabled,
-              nextMonthButtonDisabled,
-            }) => (
-              <div
-                style={{
-                  margin: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <button
-                  onClick={decreaseMonth}
-                  disabled={prevMonthButtonDisabled}
-                >
-                  {"<"}
-                </button>
-                <select
-                  value={getYear(date)}
-                  onChange={({ target: { value } }) => changeYear(value)}
-                >
-                  {years.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={months[getMonth(date)]}
-                  onChange={({ target: { value } }) =>
-                    changeMonth(months.indexOf(value))
-                  }
-                >
-                  {months.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <button
-                  onClick={increaseMonth}
-                  disabled={nextMonthButtonDisabled}
-                >
-                  {">"}
-                </button>
-              </div>
-            )}
-            selected={dateStart}
-            onChange={(date) => changeStartDate(date)}
-            filterDate={isWithinDates}
-          />
-          <Label>Select end date</Label>
-          <DatePicker
-            renderCustomHeader={({
-              date,
-              changeYear,
-              changeMonth,
-              decreaseMonth,
-              increaseMonth,
-              prevMonthButtonDisabled,
-              nextMonthButtonDisabled,
-            }) => (
-              <div
-                style={{
-                  margin: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <button
-                  onClick={decreaseMonth}
-                  disabled={prevMonthButtonDisabled}
-                >
-                  {"<"}
-                </button>
-                <select
-                  value={getYear(date)}
-                  onChange={({ target: { value } }) => changeYear(value)}
-                >
-                  {years.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={months[getMonth(date)]}
-                  onChange={({ target: { value } }) =>
-                    changeMonth(months.indexOf(value))
-                  }
-                >
-                  {months.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                <button
-                  onClick={increaseMonth}
-                  disabled={nextMonthButtonDisabled}
-                >
-                  {">"}
-                </button>
-              </div>
-            )}
-            selected={dateEnd}
-            onChange={(date) => changeEndDate(date)}
-            filterDate={isWithinDates}
-          />
-          <div>{errorMessage}</div>
-        </Controls>
       </MainContent>
       <Footer>
         <Logo />
