@@ -30,7 +30,7 @@ const Controls = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin: 20px 0 0 0;
+  margin: 10px 0 0 0;
 `;
 
 const Label = styled.label`

@@ -16,6 +16,15 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 300;
     box-sizing: border-box;
   }
+  a {
+    color: ${(props) => darken("0.2", props.theme.highlight)};
+  }
+  a:link {
+    color: ${(props) => darken("0.2", props.theme.highlight)};
+  }
+  a:visited {
+    color: ${(props) => darken("0.2", props.theme.highlight)};
+  }
 `;
 
 const App = () => {

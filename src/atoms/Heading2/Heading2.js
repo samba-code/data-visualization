@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { rem, lighten } from "polished";
+import { rem, darken } from "polished";
 
 import PropTypes from "prop-types";
 
 const StyledHeading2 = styled.h2`
   font-size: ${rem("22px")};
   line-height: ${rem("26px")};
-  color: ${(props) => lighten(0.1, props.theme.primary)};
+  color: ${(props) => darken(0.2, props.theme.secondary)};
   font-weight: bold;
   font-family: "museo-sans", sans-serif;
   font-weight: 700;

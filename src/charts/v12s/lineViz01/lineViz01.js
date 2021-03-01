@@ -65,7 +65,7 @@ const LineViz01 = ({
             xAccessor={xAccessorScaled}
             yAccessor={yAccessorScaled}
             interpolation={d3.curveLinear}
-            strokeColor="blue"
+            strokeColor="#00115C"
           />
         </ChartSize>
       </ChartWrapper>

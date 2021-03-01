@@ -10,7 +10,7 @@ const StyledHeader = styled.header`
   justify-content: center;
   width: 100%;
   padding: 12px;
-  background: grey;
+  background: ${(props) => props.theme.neutral};
   margin-bottom: 20px;
 `;
 
