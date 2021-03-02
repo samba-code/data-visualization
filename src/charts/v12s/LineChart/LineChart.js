@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
-import ChartSize from "../../chartElements/ChartSize/ChartSize";
+import ChartSizer from "../../chartElements/ChartSize/ChartSize";
 import ChartLine from "../../chartTypes/ChartLine/ChartLine/ChartLine";
 import ChartWrapper from "../../chartElements/ChartWrapper/ChartWrapper";
 import Axis from "../../chartElements/Axis/Axis";
@@ -45,7 +45,7 @@ const LineChart = ({
   return (
     <div ref={ref}>
       <ChartWrapper>
-        <ChartSize dimensions={dimensions}>
+        <ChartSizer dimensions={dimensions}>
           <Axis
             dimensions={dimensions}
             dimension="x"
@@ -69,7 +69,7 @@ const LineChart = ({
             interpolation={d3.curveLinear}
             strokeColor="#00115C"
           />
-        </ChartSize>
+        </ChartSizer>
       </ChartWrapper>
     </div>
   );
