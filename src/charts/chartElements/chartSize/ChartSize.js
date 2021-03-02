@@ -7,7 +7,7 @@ import "./chart.css";
 const ChartContext = createContext();
 export const useChartDimensions = () => useContext(ChartContext);
 
-const Chart = ({ dimensions, children }) => (
+const ChartSize = ({ dimensions, children }) => (
   <ChartContext.Provider value={dimensions}>
     <svg className="Chart" width={dimensions.width} height={dimensions.height}>
       <g
@@ -19,7 +19,7 @@ const Chart = ({ dimensions, children }) => (
   </ChartContext.Provider>
 );
 
-Chart.propTypes = {
+ChartSize.propTypes = {
   dimensions: dimensionsPropsType,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -27,8 +27,8 @@ Chart.propTypes = {
   ]).isRequired,
 };
 
-Chart.defaultProps = {
+ChartSize.defaultProps = {
   dimensions: {},
 };
 
-export default Chart;
+export default ChartSize;
