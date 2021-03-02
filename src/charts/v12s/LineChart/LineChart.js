@@ -9,12 +9,14 @@ import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
+console.log("Line update");
+
 const formatDate = (time) => {
   const formattedTime = d3.timeFormat("%e/%m/%Y");
   return formattedTime(time);
 };
 
-const LineViz01 = ({
+const LineChart = ({
   data,
   xAccessor,
   yAccessor,
@@ -73,7 +75,7 @@ const LineViz01 = ({
   );
 };
 
-LineViz01.propTypes = {
+LineChart.propTypes = {
   data: PropTypes.array,
   xAccessor: accessorPropsType,
   yAccessor: accessorPropsType,
@@ -84,9 +86,9 @@ LineViz01.propTypes = {
   tickFormat: PropTypes.func,
 };
 
-LineViz01.defaultProps = {
+LineChart.defaultProps = {
   xAccessor: (d) => d.x,
   yAccessor: (d) => d.y,
   tickFormat: (d) => d,
 };
-export default LineViz01;
+export default LineChart;
