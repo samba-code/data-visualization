@@ -1,13 +1,13 @@
 .Axis__line {
-  stroke: #eee;
+  stroke: #aaa;
 }
 
 .Tick__line {
-  stroke: #eee;
+  stroke: #aaa;
 }
 
 .Chart__line {
-  stroke: #eee;
+  stroke: #aaa;
 }
 
 .Axis__label {
@@ -17,7 +17,7 @@
 
 .Axis__tick {
   font-size: 12px;
-  fill: #888;
+  fill: #777;
 }
 
 .AxisHorizontal .Axis__tick {
