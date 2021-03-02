@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
-import ChartSizer from "../../chartElements/ChartSize/ChartSize";
+import ChartSizer from "../../chartElements/ChartSizer/ChartSizer";
 import ChartLine from "../../chartTypes/ChartLine/ChartLine/ChartLine";
 import ChartWrapper from "../../chartElements/ChartWrapper/ChartWrapper";
 import Axis from "../../chartElements/Axis/Axis";
