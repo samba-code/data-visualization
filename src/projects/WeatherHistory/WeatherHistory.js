@@ -102,9 +102,9 @@ const defaultMeasure = Object.values(weatherMeasures).filter(
 )[0].label;
 
 const convertDates = (dateString) => {
-  // Convert from DD-MM-YYYY to MM-DD-YYYY
+  // Convert from DD-MM-YYYY to YYYY-MM-DD
   const splitDate = dateString.split("-");
-  return `${splitDate[1]}-${splitDate[0]}-${splitDate[2]}`;
+  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
 };
 
 const DATE_ERROR = "Start date must be before end date";
@@ -144,7 +144,6 @@ const WeatherHistory = () => {
   };
   useEffect(() => {
     getWeatherHistory().then((d) => {
-      console.log("get weather data");
       setChartData(d);
       setFilteredChartData(d);
       setIsLoading(false);
@@ -162,10 +161,12 @@ const WeatherHistory = () => {
     });
     setFilteredChartData(weatherDataBetweenDates);
   }, [dateStart, dateEnd]);
+
   const xAccessor = (d) => {
     const newDate = new Date(convertDates(d.date));
     return newDate;
   };
+
   const onSelectChange = (e) => {
     setCurrentMeasure(e.currentTarget.value);
   };
@@ -232,6 +233,7 @@ const WeatherHistory = () => {
             <Label>Start date</Label>
             <DatePicker
               className="date-picker"
+              locale="en-GB"
               renderCustomHeader={({
                 date,
                 changeYear,
@@ -295,6 +297,7 @@ const WeatherHistory = () => {
             <Label>End date</Label>
             <DatePicker
               className="date-picker"
+              locale="en-GB"
               renderCustomHeader={({
                 date,
                 changeYear,

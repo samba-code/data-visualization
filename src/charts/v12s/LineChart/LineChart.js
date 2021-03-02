@@ -9,8 +9,6 @@ import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
-console.log("Line update");
-
 const formatDate = (time) => {
   const formattedTime = d3.timeFormat("%e/%m/%Y");
   return formattedTime(time);
@@ -39,7 +37,10 @@ const LineChart = ({
     .domain(d3.extent(data, yAccessor))
     .range([dimensions.boundedHeight, 0])
     .nice();
-  const xAccessorScaled = (d) => xScale(xAccessor(d));
+  const xAccessorScaled = (d) => {
+    const result = xScale(xAccessor(d));
+    return result;
+  };
   const yAccessorScaled = (d) => yScale(yAccessor(d));
 
   return (
