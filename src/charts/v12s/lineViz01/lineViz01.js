@@ -9,6 +9,8 @@ import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
+console.log("Line update");
+
 const formatDate = (time) => {
   const formattedTime = d3.timeFormat("%e/%m/%Y");
   return formattedTime(time);
