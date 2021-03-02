@@ -9,7 +9,7 @@ import Obfuscate from "react-obfuscate";
 import { rem, lighten } from "polished";
 
 import { accessorPropsType } from "../../charts/utils/utils";
-import LineViz01 from "../../charts/v12s/LineViz01/LineViz01";
+import LineChart from "../../charts/v12s/LineChart/LineChart";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
 import Paragraph from "../../atoms/Paragraph/Paragraph";
@@ -359,7 +359,7 @@ const WeatherHistory = () => {
         {isLoading ? (
           <Loading id="loading">Loading weather data...</Loading>
         ) : (
-          <LineViz01
+          <LineChart
             data={filteredChartData}
             xAccessor={xAccessor}
             yAccessor={yAccessor}
