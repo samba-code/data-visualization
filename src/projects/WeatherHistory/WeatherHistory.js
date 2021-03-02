@@ -233,7 +233,7 @@ const WeatherHistory = () => {
             <Label>Start date</Label>
             <DatePicker
               className="date-picker"
-              locale="en-GB"
+              dateFormat="dd/MM/yyyy"
               renderCustomHeader={({
                 date,
                 changeYear,
@@ -297,7 +297,7 @@ const WeatherHistory = () => {
             <Label>End date</Label>
             <DatePicker
               className="date-picker"
-              locale="en-GB"
+              dateFormat="dd/MM/yyyy"
               renderCustomHeader={({
                 date,
                 changeYear,
