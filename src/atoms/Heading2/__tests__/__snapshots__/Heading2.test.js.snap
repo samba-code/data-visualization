@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading2 should match snapshot 1`] = `
+<h2
+  class="Heading2__StyledHeading2-sc-1oorg19-0 hpuRNy"
+/>
+`;

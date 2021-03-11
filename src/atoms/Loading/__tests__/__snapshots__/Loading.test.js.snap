@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading should match snapshot 1`] = `
+<div
+  class="Loading__StyledLoading-accywl-0 dkWplq"
+>
+  <span
+    class="css-0"
+  >
+    <span
+      class="css-129peub"
+    />
+    <span
+      class="css-prnvxp"
+    />
+    <span
+      class="css-8el4s5"
+    />
+    <span
+      class="css-1hf2v34"
+    />
+    <span
+      class="css-tx0a7l"
+    />
+  </span>
+  <p
+    class="Loading__LoadingText-accywl-1 cMoPgu"
+  >
+    Loading data
+  </p>
+</div>
+`;
