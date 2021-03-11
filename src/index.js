@@ -27,9 +27,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-console.log("v1.0");
-
-const App = () => {
+export const App = () => {
   return (
     <ThemeProvider theme={sambaThemeOne}>
       <Reset />

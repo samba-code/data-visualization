@@ -4,7 +4,7 @@
   "description": "Samba Code Data Visualization",
   "main": "./src/index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --config=test-config/jest.config.js",
+    "test": "jest --config=test-config/jest.config.js",
     "test:update": "jest -u --config=test-config/jest.config.js",
     "webpack-dev-server": "webpack-dev-server --hot",
     "webpack": "webpack",
@@ -19,6 +19,12 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "lint": "eslint src/**/*.js"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -54,6 +60,7 @@
     "eslint-plugin-react": "^7.22.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.0.0-beta.4",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
