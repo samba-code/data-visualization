@@ -16,6 +16,7 @@ import Paragraph from "../../atoms/Paragraph/Paragraph";
 import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
 import MainContent from "../../atoms/MainContent/MainContent";
 import Header from "../../atoms/Header/Header";
+import NavBar from "../../atoms/NavBar/NavBar";
 import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
 import Loading from "../../atoms/Loading/Loading";
@@ -182,6 +183,7 @@ const WeatherHistory = () => {
 
   return (
     <PageWrapper>
+      <NavBar />
       <Header>
         <Heading1>LONDON WEATHER HISTORY 1980 - 2020</Heading1>
       </Header>

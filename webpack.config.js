@@ -21,6 +21,7 @@ module.exports = (_, { mode, env, presets }) => {
       },
       output: {
         filename: "bundle.js",
+        publicPath: "/",
       },
       module: {
         rules: [
@@ -57,6 +58,7 @@ module.exports = (_, { mode, env, presets }) => {
       ],
       devServer: {
         contentBase: path.join(__dirname, "public"),
+        historyApiFallback: true,
       },
       devtool: "source-map",
     },

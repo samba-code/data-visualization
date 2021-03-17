@@ -1,4 +1,6 @@
 import React from "react";
+import { Router } from "@reach/router";
+
 import { render } from "react-dom";
 import { Reset } from "styled-reset";
 import { darken } from "polished";
@@ -6,6 +8,9 @@ import { darken } from "polished";
 import { sambaThemeOne } from "./styles/theme/theme.js";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import WeatherHistory from "./projects/WeatherHistory/WeatherHistory";
+import HomePage from "./pages/HomePage/HomePage";
+import CryptoTracker from "./projects/CryptoTracker/CryptoTracker";
+import NotFound from "./pages/NotFound/NotFound";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,7 +37,12 @@ export const App = () => {
     <ThemeProvider theme={sambaThemeOne}>
       <Reset />
       <GlobalStyle />
-      <WeatherHistory />
+      <Router>
+        <NotFound default />
+        <HomePage path="/" />
+        <WeatherHistory path="weather-history" />
+        <CryptoTracker path="crypto-tracker" />
+      </Router>
     </ThemeProvider>
   );
 };
