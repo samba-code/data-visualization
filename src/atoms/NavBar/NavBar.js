@@ -10,11 +10,18 @@ const StyledNav = styled.nav`
   width: 100%;
   padding: 12px;
   background: black;
+  &:link {
+    color: white;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  color: white;
 `;
 
 const NavBar = () => (
   <StyledNav>
-    <Link to="/">Samba Code Data Visualization</Link>
+    <StyledLink to="/">Samba Code Data Visualization</StyledLink>
   </StyledNav>
 );
 
