@@ -52,7 +52,7 @@ const HomePage = () => {
   return (
     <>
       <Main>
-        <Header>Data Visualization</Header>
+        <Header>Samba Code: Data Visualization</Header>
         <HomePageText>
           This is a selection of data visualization projects.
         </HomePageText>
