@@ -20,8 +20,8 @@ import {
   selectData,
   getCryptoData,
   selectError,
-  setDays,
-  selectDays,
+  setTimeRange,
+  selectTimeRange,
 } from "./cryptoTrackerSlice";
 
 const CryptoTracker = () => {
@@ -29,11 +29,13 @@ const CryptoTracker = () => {
   const loading = useSelector(selectLoading);
   const data = useSelector(selectData);
   const error = useSelector(selectError);
-  const days = useSelector(selectDays);
+  const timeRange = useSelector(selectTimeRange);
 
   useEffect(() => {
-    dispatch(getCryptoData(days));
-  }, [days]);
+    if (!data || data?.[timeRange]?.length === 0) {
+      dispatch(getCryptoData(timeRange));
+    }
+  }, [timeRange]);
 
   return (
     <PageWrapper>
@@ -43,43 +45,43 @@ const CryptoTracker = () => {
       </Header>
       <MainContent>
         <Heading2>Cryptocurrency Tracker Chart</Heading2>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        {loading && (
-          <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>
-        )}
         <div>
           <button
             onClick={() => {
-              dispatch(setDays(DAY_VALUES.DAY.id));
+              dispatch(setTimeRange(DAY_VALUES.DAY.id));
             }}
           >
             1 day
           </button>
           <button
             onClick={() => {
-              dispatch(setDays(DAY_VALUES.WEEK.id));
+              dispatch(setTimeRange(DAY_VALUES.WEEK.id));
             }}
           >
             7 days
           </button>
           <button
             onClick={() => {
-              dispatch(setDays(DAY_VALUES.MONTH.id));
+              dispatch(setTimeRange(DAY_VALUES.MONTH.id));
             }}
           >
             30 days
           </button>
           <button
             onClick={() => {
-              dispatch(setDays(DAY_VALUES.YEAR.id));
+              dispatch(setTimeRange(DAY_VALUES.YEAR.id));
             }}
           >
             365 days
           </button>
         </div>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {loading && (
+          <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>
+        )}
         {!loading && !error && (
           <LineChart
-            data={data}
+            data={data[timeRange]}
             xAccessor={(d) => d[0]}
             yAccessor={(d) => d[1]}
             yLabel=""

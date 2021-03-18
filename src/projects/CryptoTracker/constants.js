@@ -12,7 +12,7 @@ export const DAY_VALUES = {
   MONTH: {
     id: "MONTH",
     day: 30,
-    interval: "daily",
+    interval: "hourly",
   },
   YEAR: {
     id: "YEAR",
