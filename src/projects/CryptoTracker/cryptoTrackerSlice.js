@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as d3 from "d3";
-import { WEATHER_DATA_URL } from "./constants";
+import { CRYPTO_DATA_URL } from "./cryptoTrackerConstants";
 
-export const weatherHistorySlice = createSlice({
-  name: "weatherHistory",
+export const cryptoTrackerSlice = createSlice({
+  name: "cryptoTracker",
   initialState: {
     data: [],
     loading: false,
@@ -22,18 +22,18 @@ export const weatherHistorySlice = createSlice({
   },
 });
 
-export const selectLoading = (state) => state.weatherHistory.loading;
-export const selectData = (state) => state.weatherHistory.data;
-export const selectError = (state) => state.weatherHistory.error;
+export const selectLoading = (state) => state.cryptoTracker.loading;
+export const selectData = (state) => state.cryptoTracker.data;
+export const selectError = (state) => state.cryptoTracker.error;
 
-export const { setLoading, setData, setError } = weatherHistorySlice.actions;
+export const { setLoading, setData, setError } = cryptoTrackerSlice.actions;
 
-export const getWeatherHistory = () => async (dispatch) => {
+export const getCryptoData = () => async (dispatch) => {
   dispatch(setLoading(true));
-  const dataURL = WEATHER_DATA_URL;
   try {
-    const weatherHistory = await d3.json(dataURL);
-    dispatch(setData(weatherHistory));
+    const cryptoData = await d3.json(CRYPTO_DATA_URL);
+    const { prices } = cryptoData;
+    dispatch(setData(prices));
     dispatch(setLoading(false));
     dispatch(setError(null));
     // TODO - Add error reporting
@@ -43,4 +43,4 @@ export const getWeatherHistory = () => async (dispatch) => {
   }
 };
 
-export default weatherHistorySlice.reducer;
+export default cryptoTrackerSlice.reducer;

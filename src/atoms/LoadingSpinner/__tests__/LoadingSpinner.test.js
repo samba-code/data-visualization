@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "enzyme";
 
-import Loading from "../Loading";
+import LoadingSpinner from "../LoadingSpinner";
 
-describe("Loading", () => {
+describe("LoadingSpinner", () => {
   it("should match snapshot", () => {
-    const wrapper = render(<Loading />);
+    const wrapper = render(<LoadingSpinner />);
     expect(wrapper).toMatchSnapshot();
   });
 });

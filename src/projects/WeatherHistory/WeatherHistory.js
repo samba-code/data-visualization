@@ -27,7 +27,7 @@ import Header from "../../atoms/Header/Header";
 import NavBar from "../../atoms/NavBar/NavBar";
 import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
-import Loading from "../../atoms/Loading/Loading";
+import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
 import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
 
 import "./DatePicker.css";
@@ -363,7 +363,9 @@ const WeatherHistory = () => {
           <div>{errorMessage}</div>
         </Controls>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        {loading && <Loading id="loading">Loading weather data...</Loading>}
+        {loading && (
+          <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>
+        )}
         {!loading && !error && (
           <LineChart
             data={filteredChartData}
