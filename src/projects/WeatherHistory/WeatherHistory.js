@@ -7,12 +7,20 @@ import { range } from "lodash";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
 import { rem, lighten } from "polished";
+import { useSelector, useDispatch } from "react-redux";
 
+import {
+  selectLoading,
+  selectData,
+  getWeatherHistory,
+  selectError,
+} from "./weatherHistorySlice";
 import { accessorPropsType } from "../../charts/utils/utils";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
 import Paragraph from "../../atoms/Paragraph/Paragraph";
+import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
 import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
 import MainContent from "../../atoms/MainContent/MainContent";
 import Header from "../../atoms/Header/Header";
@@ -21,7 +29,6 @@ import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
 import Loading from "../../atoms/Loading/Loading";
 import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
-import * as d3 from "d3";
 
 import "./DatePicker.css";
 
@@ -92,12 +99,6 @@ const months = [
   "December",
 ];
 
-const getWeatherHistory = async () => {
-  const dataURL = "https://data.sambacode.net/weather-history-london.json";
-  const weatherHistory = await d3.json(dataURL);
-  return weatherHistory;
-};
-
 const defaultMeasure = Object.values(weatherMeasures).filter(
   (x) => x.default
 )[0].label;
@@ -112,12 +113,14 @@ const DATE_ERROR = "Start date must be before end date";
 
 const WeatherHistory = () => {
   const [currentMeasure, setCurrentMeasure] = useState(defaultMeasure);
-  const [chartData, setChartData] = useState([]);
   const [filteredChartData, setFilteredChartData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [dateStart, setDateStart] = useState(parseISO(EARLIEST_DATE));
   const [dateEnd, setDateEnd] = useState(parseISO(LAST_DATE));
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
+  const data = useSelector(selectData);
+  const error = useSelector(selectError);
 
   const changeStartDate = (newStartDate) => {
     if (compareAsc(dateEnd, newStartDate) > 0) {
@@ -144,14 +147,12 @@ const WeatherHistory = () => {
     );
   };
   useEffect(() => {
-    getWeatherHistory().then((d) => {
-      setChartData(d);
-      setFilteredChartData(d);
-      setIsLoading(false);
-    });
+    if (data.length === 0) {
+      dispatch(getWeatherHistory());
+    }
   }, []);
   useEffect(() => {
-    const weatherDataBetweenDates = chartData.filter((d) => {
+    const weatherDataBetweenDates = data.filter((d) => {
       const currentDate = new Date(convertDates(d.date));
       const startDate = dateStart;
       const endDate = dateEnd;
@@ -161,7 +162,7 @@ const WeatherHistory = () => {
       );
     });
     setFilteredChartData(weatherDataBetweenDates);
-  }, [dateStart, dateEnd]);
+  }, [dateStart, dateEnd, data]);
 
   const xAccessor = (d) => {
     const newDate = new Date(convertDates(d.date));
@@ -361,9 +362,9 @@ const WeatherHistory = () => {
           </InputContainer>
           <div>{errorMessage}</div>
         </Controls>
-        {isLoading ? (
-          <Loading id="loading">Loading weather data...</Loading>
-        ) : (
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {loading && <Loading id="loading">Loading weather data...</Loading>}
+        {!loading && !error && (
           <LineChart
             data={filteredChartData}
             xAccessor={xAccessor}

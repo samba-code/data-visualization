@@ -4,4 +4,5 @@ export const sambaThemeOne = {
   secondaryLight: "#D9FFF9",
   highlight: "#F2564B",
   neutral: "#A9C1D1",
+  warning: "#F2564B",
 };
