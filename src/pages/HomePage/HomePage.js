@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { lighten } from "polished";
 
+import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
 import ProjectCard from "../../molecules/ProjectCard/ProjectCard";
 import Header from "../../atoms/Header/Header";
+import Heading1 from "../../atoms/Heading1/Heading1";
 
 const HomePageText = styled.p`
   max-width: 600px;
@@ -50,9 +52,11 @@ const CardHolder = styled.section`
 
 const HomePage = () => {
   return (
-    <>
+    <PageWrapper>
+      <Header>
+        <Heading1>Samba Code: Data Visualization</Heading1>
+      </Header>
       <Main>
-        <Header>Samba Code: Data Visualization</Header>
         <HomePageText>
           This is a selection of data visualization projects.
         </HomePageText>
@@ -71,7 +75,7 @@ const HomePage = () => {
           />
         </CardHolder>
       </Main>
-    </>
+    </PageWrapper>
   );
 };
 

@@ -21,7 +21,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: "museo-sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
     box-sizing: border-box;
-    background: ${(props) => props.theme.neutral};
     color: ${(props) => darken("0.1", props.theme.primary)};
     box-sizing: border-box;
     font-size: ${rem("30px")};

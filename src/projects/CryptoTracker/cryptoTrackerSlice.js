@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as d3 from "d3";
-import { CRYPTO_DATA_URL } from "./cryptoTrackerConstants";
+import { makeDataURL } from "./constants";
+import { DAY_VALUES } from "./constants";
 
 export const cryptoTrackerSlice = createSlice({
   name: "cryptoTracker",
@@ -8,6 +9,7 @@ export const cryptoTrackerSlice = createSlice({
     data: [],
     loading: false,
     error: null,
+    days: DAY_VALUES.YEAR.id,
   },
   reducers: {
     setLoading: (state, action) => {
@@ -19,17 +21,27 @@ export const cryptoTrackerSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    setDays: (state, action) => {
+      state.days = action.payload;
+    },
   },
 });
 
 export const selectLoading = (state) => state.cryptoTracker.loading;
 export const selectData = (state) => state.cryptoTracker.data;
 export const selectError = (state) => state.cryptoTracker.error;
+export const selectDays = (state) => state.cryptoTracker.days;
 
-export const { setLoading, setData, setError } = cryptoTrackerSlice.actions;
+export const {
+  setLoading,
+  setData,
+  setError,
+  setDays,
+} = cryptoTrackerSlice.actions;
 
-export const getCryptoData = () => async (dispatch) => {
+export const getCryptoData = (days) => async (dispatch) => {
   dispatch(setLoading(true));
+  const CRYPTO_DATA_URL = makeDataURL(days);
   try {
     const cryptoData = await d3.json(CRYPTO_DATA_URL);
     const { prices } = cryptoData;
