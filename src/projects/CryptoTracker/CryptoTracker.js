@@ -11,6 +11,7 @@ import NavBar from "../../atoms/NavBar/NavBar";
 import Logo from "../../atoms/Logo/Logo";
 import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
+import LineChart from "../../charts/v12s/LineChart/LineChart";
 
 import {
   selectLoading,
@@ -43,7 +44,18 @@ const CryptoTracker = () => {
         {loading && (
           <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>
         )}
-        {data.length > 0 && <div>{data}</div>}
+        {!loading && !error && (
+          <LineChart
+            data={data}
+            xAccessor={(d) => d[0]}
+            yAccessor={(d) => d[1]}
+            yLabel=""
+            xLabel=""
+            numberOfTicksX={12}
+            numberOfTicksY={6}
+            tickFormat={(x) => x}
+          />
+        )}
       </MainContent>
       <Footer>
         <Logo />
