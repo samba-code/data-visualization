@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Loading should match snapshot 1`] = `
+exports[`LoadingSpinner should match snapshot 1`] = `
 <div
-  class="Loading__StyledLoading-accywl-0 dkWplq"
+  class="LoadingSpinner__StyledLoading-sc-17pj9ki-0 jNAaLu"
 >
   <span
     class="css-0"
@@ -24,7 +24,7 @@ exports[`Loading should match snapshot 1`] = `
     />
   </span>
   <p
-    class="Loading__LoadingText-accywl-1 cMoPgu"
+    class="LoadingSpinner__LoadingText-sc-17pj9ki-1 iQTncG"
   >
     Loading data
   </p>

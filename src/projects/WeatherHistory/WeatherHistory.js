@@ -16,6 +16,7 @@ import {
   selectError,
 } from "./weatherHistorySlice";
 import { accessorPropsType } from "../../charts/utils/utils";
+import { formatDate } from "../../utils/utils";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
@@ -174,7 +175,7 @@ const WeatherHistory = () => {
   };
 
   const yAccessor = weatherMeasures[currentMeasure].accessor;
-  const tickFormat = weatherMeasures[currentMeasure].format;
+  const tickFormatY = weatherMeasures[currentMeasure].format;
   const yLabel = weatherMeasures[currentMeasure].label;
 
   const chartTitle = `${yLabel} in London between ${format(
@@ -375,7 +376,8 @@ const WeatherHistory = () => {
             xLabel=""
             numberOfTicksX={12}
             numberOfTicksY={6}
-            tickFormat={tickFormat}
+            tickFormatY={tickFormatY}
+            tickFormatX={formatDate}
           />
         )}
       </MainContent>

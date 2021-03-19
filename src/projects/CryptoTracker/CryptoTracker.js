@@ -32,6 +32,10 @@ const CryptoTracker = () => {
   const error = useSelector(selectError);
   const timeRange = useSelector(selectTimeRange);
 
+  const noop = (x) => x;
+  const formatX = DAY_VALUES?.[timeRange]?.format ?? noop;
+  const ticks = DAY_VALUES?.[timeRange]?.ticks ?? 12;
+
   useEffect(() => {
     if (!data || data?.[timeRange]?.length === 0) {
       dispatch(getCryptoData(timeRange));
@@ -87,9 +91,10 @@ const CryptoTracker = () => {
             yAccessor={(d) => d[1]}
             yLabel=""
             xLabel=""
-            numberOfTicksX={12}
+            numberOfTicksX={ticks}
             numberOfTicksY={6}
-            tickFormat={currencyFormat}
+            tickFormatY={currencyFormat}
+            tickFormatX={formatX}
           />
         )}
       </MainContent>

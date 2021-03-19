@@ -3,5 +3,7 @@
 exports[`Footer should match snapshot 1`] = `
 <footer
   class="Footer__StyledFooter-ge5quf-0 kftHFY"
-/>
+>
+  Footer
+</footer>
 `;
