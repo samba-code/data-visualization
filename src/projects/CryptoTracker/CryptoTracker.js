@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Obfuscate from "react-obfuscate";
 
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
@@ -12,6 +13,8 @@ import Logo from "../../atoms/Logo/Logo";
 import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
+import Paragraph from "../../atoms/Paragraph/Paragraph";
+import { IntroductionArea, Introduction } from "../../styles/styledComponents";
 
 import { DAY_VALUES } from "./constants";
 import { currencyFormat } from "./utils";
@@ -46,10 +49,29 @@ const CryptoTracker = () => {
     <PageWrapper>
       <NavBar />
       <Header>
-        <Heading1>Cryptocurrency Tracker</Heading1>
+        <Heading1>Cryptocurrency</Heading1>
       </Header>
+      <IntroductionArea>
+        <Introduction>
+          <Paragraph>
+            This chart displays live cryptocurrency data from CoinGecko. Select
+            time range, currency and asset below.
+          </Paragraph>
+          <Paragraph>
+            If you need a custom interactive data visualisation for your project
+            contact{" "}
+            <Obfuscate
+              email="hello@sambacode.net"
+              aria-label="Email Samba Code"
+            >
+              hello@sambacode.net
+            </Obfuscate>
+            .
+          </Paragraph>
+        </Introduction>
+      </IntroductionArea>
       <MainContent>
-        <Heading2>Cryptocurrency Tracker Chart</Heading2>
+        <Heading2>Cryptocurrency Price</Heading2>
         <div>
           <button
             onClick={() => {

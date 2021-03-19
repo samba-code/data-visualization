@@ -6,7 +6,7 @@ import { parseISO, getYear, getMonth, format, compareAsc } from "date-fns";
 import { range } from "lodash";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
-import { rem, lighten } from "polished";
+import { rem } from "polished";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -30,23 +30,8 @@ import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
 import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
-
+import { IntroductionArea, Introduction } from "../../styles/styledComponents";
 import "./DatePicker.css";
-
-const IntroductionArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background: ${(props) => lighten(0.2, props.theme.neutral)};
-  width: 100%;
-  padding: 10px 0 30px 0;
-`;
-
-const Introduction = styled.div`
-  width: 90%;
-  max-width: 1024px;
-`;
 
 const Controls = styled.div`
   display: flex;
