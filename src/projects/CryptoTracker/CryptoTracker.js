@@ -95,6 +95,7 @@ const CryptoTracker = () => {
             numberOfTicksY={6}
             tickFormatY={currencyFormat}
             tickFormatX={formatX}
+            lineWidth={2}
           />
         )}
       </MainContent>

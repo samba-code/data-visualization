@@ -19,6 +19,7 @@ const LineChart = ({
   tickFormatX,
   numberOfTicksX,
   numberOfTicksY,
+  lineWidth,
 }) => {
   const [ref, dimensions] = useChartDimensions({
     height: 300,
@@ -65,6 +66,7 @@ const LineChart = ({
             yAccessor={yAccessorScaled}
             interpolation={d3.curveLinear}
             strokeColor="#00115C"
+            lineWidth={lineWidth}
           />
         </ChartSizer>
       </ChartWrapper>
@@ -82,6 +84,7 @@ LineChart.propTypes = {
   numberOfTicksY: PropTypes.number,
   tickFormatY: PropTypes.func,
   tickFormatX: PropTypes.func,
+  lineWidth: PropTypes.number,
 };
 
 LineChart.defaultProps = {

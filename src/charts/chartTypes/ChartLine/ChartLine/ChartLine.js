@@ -21,6 +21,7 @@ const ChartLine = ({
   yAccessor,
   interpolation,
   strokeColor,
+  lineWidth,
   ...props
 }) => {
   const lineGenerator = d3[type]()
@@ -33,7 +34,7 @@ const ChartLine = ({
       {...props}
       className="chart-line"
       d={lineGenerator(data)}
-      strokeWidth="1"
+      strokeWidth={lineWidth}
       stroke={strokeColor}
       fill="none"
     />
@@ -47,6 +48,7 @@ ChartLine.propTypes = {
   yAccessor: accessorPropsType,
   interpolation: PropTypes.func,
   strokeColor: PropTypes.string,
+  lineWidth: PropTypes.number,
 };
 
 ChartLine.defaultProps = {
@@ -56,6 +58,7 @@ ChartLine.defaultProps = {
   yAccessor: (d) => d.y,
   interpolation: d3.curveMonotoneX,
   strokeColor: "black",
+  lineWidth: 1,
 };
 
 export default ChartLine;
