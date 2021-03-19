@@ -14,6 +14,7 @@ import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
 
 import { DAY_VALUES } from "./constants";
+import { currencyFormat } from "./utils";
 
 import {
   selectLoading,
@@ -88,7 +89,7 @@ const CryptoTracker = () => {
             xLabel=""
             numberOfTicksX={12}
             numberOfTicksY={6}
-            tickFormat={(x) => x}
+            tickFormat={currencyFormat}
           />
         )}
       </MainContent>
