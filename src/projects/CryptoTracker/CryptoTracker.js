@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Obfuscate from "react-obfuscate";
+import styled from "styled-components";
 
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
@@ -9,6 +10,7 @@ import MainContent from "../../atoms/MainContent/MainContent";
 import Header from "../../atoms/Header/Header";
 import Footer from "../../atoms/Footer/Footer";
 import NavBar from "../../atoms/NavBar/NavBar";
+import Button from "../../atoms/Button/Button";
 import Logo from "../../atoms/Logo/Logo";
 import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
@@ -27,6 +29,15 @@ import {
   setTimeRange,
   selectTimeRange,
 } from "./cryptoTrackerSlice";
+
+const ButtonHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  & button {
+    margin-right: 6px;
+  }
+`;
 
 const CryptoTracker = () => {
   const dispatch = useDispatch();
@@ -54,8 +65,9 @@ const CryptoTracker = () => {
       <IntroductionArea>
         <Introduction>
           <Paragraph>
-            This chart displays live cryptocurrency data from CoinGecko. Select
-            time range, currency and asset below.
+            This chart displays live cryptocurrency data from{" "}
+            <a href="https://www.coingecko.com">CoinGecko</a>. Select time
+            range, currency and asset below.
           </Paragraph>
           <Paragraph>
             If you need a custom interactive data visualisation for your project
@@ -72,36 +84,40 @@ const CryptoTracker = () => {
       </IntroductionArea>
       <MainContent>
         <Heading2>Cryptocurrency Price</Heading2>
-        <div>
-          <button
+        <ButtonHolder>
+          <Button
+            selected={timeRange === DAY_VALUES.DAY.id}
             onClick={() => {
               dispatch(setTimeRange(DAY_VALUES.DAY.id));
             }}
           >
             1 day
-          </button>
-          <button
+          </Button>
+          <Button
+            selected={timeRange === DAY_VALUES.WEEK.id}
             onClick={() => {
               dispatch(setTimeRange(DAY_VALUES.WEEK.id));
             }}
           >
             7 days
-          </button>
-          <button
+          </Button>
+          <Button
+            selected={timeRange === DAY_VALUES.MONTH.id}
             onClick={() => {
               dispatch(setTimeRange(DAY_VALUES.MONTH.id));
             }}
           >
             30 days
-          </button>
-          <button
+          </Button>
+          <Button
+            selected={timeRange === DAY_VALUES.YEAR.id}
             onClick={() => {
               dispatch(setTimeRange(DAY_VALUES.YEAR.id));
             }}
           >
             365 days
-          </button>
-        </div>
+          </Button>
+        </ButtonHolder>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {loading && (
           <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>

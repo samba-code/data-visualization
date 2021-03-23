@@ -29,16 +29,16 @@ const GlobalStyle = createGlobalStyle`
     font-variant: normal;
   }
   a {
-    /* color: ${(props) => darken("0.1", props.theme.primary)}; */
+    color: ${(props) => darken("0.1", props.theme.primaryLight)};
     /* color: ${(props) => darken("0.2", props.theme.highlight)}; */
     text-decoration: none;
   }
   a:link {
-    /* color: ${(props) => darken("0.1", props.theme.primary)}; */
+    color: ${(props) => darken("0.1", props.theme.primaryLight)};
     /* color: ${(props) => darken("0.2", props.theme.highlight)}; */
   }
   a:visited {
-    /* color: ${(props) => darken("0.1", props.theme.primary)}; */
+    color: ${(props) => darken("0.1", props.theme.primaryLight)};
     /* color: ${(props) => darken("0.2", props.theme.highlight)}; */
   }
 `;
