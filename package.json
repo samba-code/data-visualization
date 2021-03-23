@@ -18,7 +18,8 @@
     "build:analyze": "npm run prod -- --mode=development --env presets=analyze",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "prepare": "husky install"
   },
   "jest": {
     "collectCoverageFrom": [

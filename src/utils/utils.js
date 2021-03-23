@@ -12,3 +12,9 @@ export const formatHours = (time) => {
   const formattedTime = d3.timeFormat("%H:%M %p");
   return formattedTime(time);
 };
+
+export const convertDates = (dateString) => {
+  // Convert from DD-MM-YYYY to YYYY-MM-DD
+  const splitDate = dateString.split("-");
+  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
+};

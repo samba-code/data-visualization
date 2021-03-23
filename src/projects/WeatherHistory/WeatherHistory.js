@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { parseISO, getYear, getMonth, format, compareAsc } from "date-fns";
-import { range } from "lodash";
+import { parseISO, format, compareAsc } from "date-fns";
 import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
 import { rem } from "polished";
@@ -17,7 +14,7 @@ import {
   selectError,
 } from "./weatherHistorySlice";
 import { accessorPropsType } from "../../charts/utils/utils";
-import { formatDate } from "../../utils/utils";
+import { formatDate, convertDates } from "../../utils/utils";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
@@ -30,9 +27,15 @@ import NavBar from "../../atoms/NavBar/NavBar";
 import Footer from "../../atoms/Footer/Footer";
 import Logo from "../../atoms/Logo/Logo";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
-import { weatherMeasures, EARLIEST_DATE, LAST_DATE } from "./constants.js";
+import {
+  weatherMeasures,
+  EARLIEST_DATE,
+  LAST_DATE,
+  MONTHS,
+  YEARS,
+} from "./constants.js";
 import { IntroductionArea, Introduction } from "../../styles/styledComponents";
-import "./DatePicker.css";
+import DatePicker from "../../molecules/DatePicker/DatePicker";
 
 const Controls = styled.div`
   display: flex;
@@ -66,35 +69,9 @@ const SelectBox = styled.select`
   min-height: 20px;
 `;
 
-const years = range(
-  getYear(parseISO(EARLIEST_DATE)),
-  getYear(parseISO(LAST_DATE)) + 1,
-  1
-);
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 const defaultMeasure = Object.values(weatherMeasures).filter(
   (x) => x.default
 )[0].label;
-
-const convertDates = (dateString) => {
-  // Convert from DD-MM-YYYY to YYYY-MM-DD
-  const splitDate = dateString.split("-");
-  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
-};
 
 const DATE_ERROR = "Start date must be before end date";
 
@@ -133,6 +110,7 @@ const WeatherHistory = () => {
       compareAsc(new Date(LAST_DATE), new Date(date)) > -1
     );
   };
+
   useEffect(() => {
     if (data.length === 0) {
       dispatch(getWeatherHistory());
@@ -222,129 +200,21 @@ const WeatherHistory = () => {
           <InputContainer>
             <Label>Start date</Label>
             <DatePicker
-              className="date-picker"
-              dateFormat="dd/MM/yyyy"
-              renderCustomHeader={({
-                date,
-                changeYear,
-                changeMonth,
-                decreaseMonth,
-                increaseMonth,
-                prevMonthButtonDisabled,
-                nextMonthButtonDisabled,
-              }) => (
-                <div
-                  style={{
-                    margin: 10,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <button
-                    onClick={decreaseMonth}
-                    disabled={prevMonthButtonDisabled}
-                  >
-                    {"<"}
-                  </button>
-                  <select
-                    value={getYear(date)}
-                    onChange={({ target: { value } }) => changeYear(value)}
-                  >
-                    {years.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={months[getMonth(date)]}
-                    onChange={({ target: { value } }) =>
-                      changeMonth(months.indexOf(value))
-                    }
-                  >
-                    {months.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button
-                    onClick={increaseMonth}
-                    disabled={nextMonthButtonDisabled}
-                  >
-                    {">"}
-                  </button>
-                </div>
-              )}
-              selected={dateStart}
-              onChange={(date) => changeStartDate(date)}
-              filterDate={isWithinDates}
+              years={YEARS}
+              months={MONTHS}
+              selectedDate={dateStart}
+              onDateChange={changeStartDate}
+              filter={isWithinDates}
             />
           </InputContainer>
           <InputContainer>
             <Label>End date</Label>
             <DatePicker
-              className="date-picker"
-              dateFormat="dd/MM/yyyy"
-              renderCustomHeader={({
-                date,
-                changeYear,
-                changeMonth,
-                decreaseMonth,
-                increaseMonth,
-                prevMonthButtonDisabled,
-                nextMonthButtonDisabled,
-              }) => (
-                <div
-                  style={{
-                    margin: 10,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <button
-                    onClick={decreaseMonth}
-                    disabled={prevMonthButtonDisabled}
-                  >
-                    {"<"}
-                  </button>
-                  <select
-                    value={getYear(date)}
-                    onChange={({ target: { value } }) => changeYear(value)}
-                  >
-                    {years.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={months[getMonth(date)]}
-                    onChange={({ target: { value } }) =>
-                      changeMonth(months.indexOf(value))
-                    }
-                  >
-                    {months.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button
-                    onClick={increaseMonth}
-                    disabled={nextMonthButtonDisabled}
-                  >
-                    {">"}
-                  </button>
-                </div>
-              )}
-              selected={dateEnd}
-              onChange={(date) => changeEndDate(date)}
-              filterDate={isWithinDates}
+              years={YEARS}
+              months={MONTHS}
+              selectedDate={dateEnd}
+              onDateChange={changeEndDate}
+              filter={isWithinDates}
             />
           </InputContainer>
           <div>{errorMessage}</div>
