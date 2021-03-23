@@ -31,10 +31,64 @@ export const DAY_VALUES = {
   },
 };
 
-export const makeDataURL = (time, currency = "gbp") => {
+const COINGECKO_URL = "https://api.coingecko.com/api/v3";
+
+export const CURRENCY_URL = `${COINGECKO_URL}/simple/supported_vs_currencies`;
+
+export const CURRENCIES = {
+  "Pound Sterling": {
+    name: "Pound Sterling",
+    code: "GBP",
+  },
+  "US Dollar": {
+    name: "US Dollar",
+    code: "USD",
+  },
+  Euro: {
+    name: "Euro",
+    code: "EUR",
+  },
+  "Japanese Yen": {
+    name: "Japanese Yen",
+    code: "JPY",
+  },
+  "Australian Dollar": {
+    name: "Australian Dollar",
+    code: "AUD",
+  },
+  "Canadian Dollar": {
+    name: "Canadian Dollar",
+    code: "CAD",
+  },
+  "Swiss Franc": {
+    name: "Swiss Franc",
+    code: "CHF",
+  },
+  "Chinese Renminbi": {
+    name: "Chinese Renminbi",
+    code: "CNY",
+  },
+  "Hong Kong Dollar": {
+    name: "Hong Kong Dollar",
+    code: "HKD",
+  },
+  "New Zealand Dollar": {
+    name: "New Zealand Dollar",
+    code: "NZD",
+  },
+};
+
+const CURRENCY_CODES = Object.values(CURRENCIES).map((x) => x.code);
+
+export const DEFAULT_CURRENCY = CURRENCIES["Pound Sterling"];
+
+export const makeDataURL = (time, currency = DEFAULT_CURRENCY.code) => {
   if (!DAY_VALUES[time]) {
-    throw new Error("Crypto data time value not valid.");
+    throw new Error(`Crypto data time value not valid: ${time}`);
+  }
+  if (!CURRENCY_CODES.includes(currency)) {
+    throw new Error(`Currency is not a valid format: ${currency}`);
   }
   const { day, interval } = DAY_VALUES[time];
-  return `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${day}&interval=${interval}`;
+  return `${COINGECKO_URL}/coins/bitcoin/market_chart?vs_currency=${currency}&days=${day}&interval=${interval}`;
 };

@@ -26,16 +26,19 @@ import {
   InputContainer,
 } from "../../styles/styledComponents";
 
-import { DAY_VALUES } from "./constants";
+import { DAY_VALUES, CURRENCIES } from "./constants";
 import { currencyFormat } from "./utils";
 
 import {
-  selectLoading,
+  selectDataLoading,
   selectData,
   getCryptoData,
   selectError,
   setTimeRange,
   selectTimeRange,
+  getCurrencyList,
+  selectCurrency,
+  setCurrency,
 } from "./cryptoTrackerSlice";
 
 const ButtonHolder = styled.div`
@@ -49,20 +52,29 @@ const ButtonHolder = styled.div`
 
 const CryptoTracker = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(selectLoading);
+  const loading = useSelector(selectDataLoading);
   const data = useSelector(selectData);
   const error = useSelector(selectError);
   const timeRange = useSelector(selectTimeRange);
+  const currency = useSelector(selectCurrency);
 
   const noop = (x) => x;
   const formatX = DAY_VALUES?.[timeRange]?.format ?? noop;
   const ticks = DAY_VALUES?.[timeRange]?.ticks ?? 12;
 
   useEffect(() => {
-    if (!data || data?.[timeRange]?.length === 0) {
-      dispatch(getCryptoData(timeRange));
-    }
-  }, [timeRange]);
+    dispatch(getCurrencyList());
+  });
+
+  useEffect(() => {
+    // TODO - update caching
+    dispatch(getCryptoData(timeRange, currency));
+  }, [timeRange, currency]);
+
+  const onCurrencyChange = (e) => {
+    console.log(e.currentTarget.value);
+    dispatch(setCurrency(e.currentTarget.value));
+  };
 
   return (
     <PageWrapper>
@@ -92,24 +104,6 @@ const CryptoTracker = () => {
       </IntroductionArea>
       <MainContent>
         <Heading2>Cryptocurrency Price</Heading2>
-        <Controls>
-          <InputContainer>
-            <Label htmlFor="asset-select">Asset</Label>
-            <SelectBox id="asset-select" onChange={() => {}} value={"aaa"}>
-              {["aaa", "bbb", "ccc"].map((x) => {
-                return <option key={x}>{x}</option>;
-              })}
-            </SelectBox>
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="currency-select">Currency</Label>
-            <SelectBox id="currency-select" onChange={() => {}} value={"aaa"}>
-              {["aaa", "bbb", "ccc"].map((x) => {
-                return <option key={x}>{x}</option>;
-              })}
-            </SelectBox>
-          </InputContainer>
-        </Controls>
         <ButtonHolder>
           <Button
             selected={timeRange === DAY_VALUES.DAY.id}
@@ -144,6 +138,29 @@ const CryptoTracker = () => {
             365 days
           </Button>
         </ButtonHolder>
+        <Controls>
+          <InputContainer>
+            <Label htmlFor="asset-select">Asset</Label>
+            <SelectBox id="asset-select" onChange={() => {}} value={"aaa"}>
+              {["Bitcoin", "Ethereum", "Dodgecoin"].map((x) => {
+                return <option key={x}>{x}</option>;
+              })}
+            </SelectBox>
+          </InputContainer>
+          <InputContainer>
+            <Label htmlFor="currency-select">Currency</Label>
+            <SelectBox
+              id="currency-select"
+              onChange={onCurrencyChange}
+              value={currency}
+            >
+              {Object.values(CURRENCIES).map((c) => {
+                const currencyName = c.name;
+                return <option key={c.code}>{currencyName}</option>;
+              })}
+            </SelectBox>
+          </InputContainer>
+        </Controls>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {loading && (
           <LoadingSpinner id="loading">Loading weather data...</LoadingSpinner>
