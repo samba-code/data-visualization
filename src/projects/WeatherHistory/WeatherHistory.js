@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { parseISO, format, compareAsc } from "date-fns";
-import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
-import { rem } from "polished";
 import { useSelector, useDispatch } from "react-redux";
 import * as d3 from "d3";
 
@@ -34,40 +32,15 @@ import {
   MONTHS,
   YEARS,
 } from "./constants.js";
-import { IntroductionArea, Introduction } from "../../styles/styledComponents";
+import {
+  IntroductionArea,
+  Introduction,
+  SelectBox,
+  Controls,
+  Label,
+  InputContainer,
+} from "../../styles/styledComponents";
 import DatePicker from "../../molecules/DatePicker/DatePicker";
-
-const Controls = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin: 10px 0 0 0;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-size: ${rem("14px")};
-  margin: 12px 12px 4px 0;
-  font-family: "museo-sans", sans-serif;
-  font-weight: 700;
-  min-width: 80px;
-`;
-
-const InputContainer = styled.div`
-  margin: 0 25px 6px 0;
-`;
-
-const SelectBox = styled.select`
-  padding: 3px;
-  font-size: ${rem("16px")};
-  font-family: "museo-sans", sans-serif;
-  font-weight: 300;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  min-height: 20px;
-`;
 
 const defaultMeasure = Object.values(weatherMeasures).filter(
   (x) => x.default

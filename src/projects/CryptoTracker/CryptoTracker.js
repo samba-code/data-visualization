@@ -17,7 +17,14 @@ import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
 import LoadingSpinner from "../../atoms/LoadingSpinner/LoadingSpinner";
 import LineChart from "../../charts/v12s/LineChart/LineChart";
 import Paragraph from "../../atoms/Paragraph/Paragraph";
-import { IntroductionArea, Introduction } from "../../styles/styledComponents";
+import {
+  IntroductionArea,
+  Introduction,
+  SelectBox,
+  Controls,
+  Label,
+  InputContainer,
+} from "../../styles/styledComponents";
 
 import { DAY_VALUES } from "./constants";
 import { currencyFormat } from "./utils";
@@ -85,6 +92,24 @@ const CryptoTracker = () => {
       </IntroductionArea>
       <MainContent>
         <Heading2>Cryptocurrency Price</Heading2>
+        <Controls>
+          <InputContainer>
+            <Label htmlFor="asset-select">Asset</Label>
+            <SelectBox id="asset-select" onChange={() => {}} value={"aaa"}>
+              {["aaa", "bbb", "ccc"].map((x) => {
+                return <option key={x}>{x}</option>;
+              })}
+            </SelectBox>
+          </InputContainer>
+          <InputContainer>
+            <Label htmlFor="currency-select">Currency</Label>
+            <SelectBox id="currency-select" onChange={() => {}} value={"aaa"}>
+              {["aaa", "bbb", "ccc"].map((x) => {
+                return <option key={x}>{x}</option>;
+              })}
+            </SelectBox>
+          </InputContainer>
+        </Controls>
         <ButtonHolder>
           <Button
             selected={timeRange === DAY_VALUES.DAY.id}
