@@ -8,6 +8,7 @@ import styled from "styled-components";
 import Obfuscate from "react-obfuscate";
 import { rem } from "polished";
 import { useSelector, useDispatch } from "react-redux";
+import * as d3 from "d3";
 
 import {
   selectLoading,
@@ -363,6 +364,7 @@ const WeatherHistory = () => {
             numberOfTicksY={6}
             tickFormatY={tickFormatY}
             tickFormatX={formatDate}
+            interpolation={d3.curveLinear}
           />
         )}
       </MainContent>

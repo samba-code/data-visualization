@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Obfuscate from "react-obfuscate";
 import styled from "styled-components";
+import * as d3 from "d3";
 
 import Heading1 from "../../atoms/Heading1/Heading1";
 import Heading2 from "../../atoms/Heading2/Heading2";
@@ -132,6 +133,7 @@ const CryptoTracker = () => {
             numberOfTicksX={ticks}
             numberOfTicksY={6}
             tickFormatY={currencyFormat}
+            interpolation={d3.curveLinear}
             tickFormatX={formatX}
             lineWidth={2}
           />
