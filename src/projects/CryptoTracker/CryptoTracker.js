@@ -26,7 +26,7 @@ import {
   InputContainer,
 } from "../../styles/styledComponents";
 
-import { DAY_VALUES, CURRENCIES } from "./constants";
+import { DAY_VALUES, CURRENCIES, DATA_TYPES } from "./constants";
 import { makeCurrencyFormat } from "./utils";
 
 import {
@@ -41,7 +41,9 @@ import {
   selectCoinsList,
   setCurrency,
   selectAsset,
+  selectDataType,
   setAsset,
+  setDataType,
 } from "./cryptoTrackerSlice";
 
 const ButtonHolder = styled.div`
@@ -62,6 +64,7 @@ const CryptoTracker = () => {
   const currency = useSelector(selectCurrency);
   const coinsList = useSelector(selectCoinsList);
   const asset = useSelector(selectAsset);
+  const dataType = useSelector(selectDataType);
 
   const noop = (x) => x;
   const formatX = DAY_VALUES?.[timeRange]?.format ?? noop;
@@ -83,17 +86,31 @@ const CryptoTracker = () => {
     dispatch(setAsset(e.currentTarget.value));
   };
 
+  const onDataTypeChange = (e) => {
+    dispatch(setDataType(e.currentTarget.value));
+  };
+
   const currencyData = Object.values(CURRENCIES).find(
     (c) => c.name === currency
   );
 
+  const assetData = Object.values(coinsList).find(
+    (a) => a.id === asset
+  );
+
+
   const currencyFormat = makeCurrencyFormat(currencyData.format);
+
+  console.log(data);
+  console.log(timeRange);
+  console.log(dataType);
+  console.log(data[timeRange][dataType]);
 
   return (
     <PageWrapper>
       <NavBar />
       <Header>
-        <Heading1>Cryptocurrency</Heading1>
+        <Heading1>Crypto Price Chart</Heading1>
       </Header>
       <IntroductionArea>
         <Introduction>
@@ -116,7 +133,7 @@ const CryptoTracker = () => {
         </Introduction>
       </IntroductionArea>
       <MainContent>
-        <Heading2>Cryptocurrency Price</Heading2>
+        <Heading2>{assetData?.name ?? ""} Price</Heading2>
         <ButtonHolder>
           <Button
             selected={timeRange === DAY_VALUES.DAY.id}
@@ -177,6 +194,20 @@ const CryptoTracker = () => {
               })}
             </SelectBox>
           </InputContainer>
+          {/* <InputContainer>
+            <Label htmlFor="data-type-select">Data type</Label>
+            <SelectBox
+              id="data-type-select"
+              onChange={onDataTypeChange}
+              value={dataType}
+            >
+              {Object.values(DATA_TYPES).map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </SelectBox>
+          </InputContainer> */}
         </Controls>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {loading && (
@@ -184,7 +215,7 @@ const CryptoTracker = () => {
         )}
         {!loading && !error && (
           <LineChart
-            data={data[timeRange]}
+            data={data[timeRange][dataType]}
             xAccessor={(d) => d[0]}
             yAccessor={(d) => d[1]}
             yLabel=""

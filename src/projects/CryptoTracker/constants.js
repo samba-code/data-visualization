@@ -163,3 +163,20 @@ export const DEFAULT_CURRENCY = CURRENCIES["Pound Sterling"];
 export const DEFAULT_ASSET = "bitcoin";
 
 export const COINS_LIST_URL = `${COINGECKO_URL}/coins/markets?vs_currency=gbp&order=market_cap_desc&per_page=100&page=1&sparkline=false`;
+
+export const DATA_TYPES = [
+  {
+    name: "Price",
+    id: "prices",
+  },
+  {
+    name: "Market Cap",
+    id: "market_caps",
+  },
+  {
+    name: "Total Volume",
+    id: "total_volumes",
+  },
+];
+
+export const DEFAULT_DATA_TYPE = "prices";

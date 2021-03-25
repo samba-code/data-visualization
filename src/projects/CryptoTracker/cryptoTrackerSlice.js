@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as d3 from "d3";
-import { DAY_VALUES, DEFAULT_ASSET, DEFAULT_CURRENCY } from "./constants";
+import {
+  DAY_VALUES,
+  DEFAULT_ASSET,
+  DEFAULT_CURRENCY,
+  DEFAULT_DATA_TYPE,
+} from "./constants";
 import { CURRENCIES, COINS_LIST_URL } from "./constants";
 import { makeDataURL } from "./utils";
 
@@ -8,10 +13,26 @@ export const cryptoTrackerSlice = createSlice({
   name: "cryptoTracker",
   initialState: {
     data: {
-      [DAY_VALUES.DAY.id]: [],
-      [DAY_VALUES.WEEK.id]: [],
-      [DAY_VALUES.MONTH.id]: [],
-      [DAY_VALUES.YEAR.id]: [],
+      [DAY_VALUES.DAY.id]: {
+        prices: [],
+        market_caps: [],
+        volumes: [],
+      },
+      [DAY_VALUES.WEEK.id]: {
+        prices: [],
+        marketCaps: [],
+        volumes: [],
+      },
+      [DAY_VALUES.MONTH.id]: {
+        prices: [],
+        marketCaps: [],
+        volumes: [],
+      },
+      [DAY_VALUES.YEAR.id]: {
+        prices: [],
+        marketCaps: [],
+        volumes: [],
+      },
     },
     dataLoading: false,
     currencyLoading: false,
@@ -21,6 +42,7 @@ export const cryptoTrackerSlice = createSlice({
     currency: DEFAULT_CURRENCY.name,
     coinsList: [],
     asset: DEFAULT_ASSET,
+    dataType: DEFAULT_DATA_TYPE,
   },
   reducers: {
     setDataLoading: (state, action) => {
@@ -39,8 +61,8 @@ export const cryptoTrackerSlice = createSlice({
       state.asset = action.payload;
     },
     setData: (state, action) => {
-      const { timeRange, prices } = action.payload;
-      state.data[timeRange] = prices;
+      const { timeRange, data } = action.payload;
+      state.data[timeRange] = data;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -50,6 +72,9 @@ export const cryptoTrackerSlice = createSlice({
     },
     setCurrency: (state, action) => {
       state.currency = action.payload;
+    },
+    setDataType: (state, action) => {
+      state.dataType = action.payload;
     },
   },
 });
@@ -65,6 +90,7 @@ export const selectTimeRange = (state) => state.cryptoTracker.timeRange;
 export const selectCurrency = (state) => state.cryptoTracker.currency;
 export const selectAsset = (state) => state.cryptoTracker.asset;
 export const selectCoinsList = (state) => state.cryptoTracker.coinsList;
+export const selectDataType = (state) => state.cryptoTracker.dataType;
 
 export const {
   setDataLoading,
@@ -76,6 +102,7 @@ export const {
   setCurrency,
   setCoinsList,
   setAsset,
+  setDataType,
 } = cryptoTrackerSlice.actions;
 
 export const getCoinsList = () => async (dispatch) => {
@@ -100,8 +127,7 @@ export const getCryptoData = (timeRange, currency, asset) => async (
   const CRYPTO_DATA_URL = makeDataURL(timeRange, currencyCode, asset);
   try {
     const cryptoData = await d3.json(CRYPTO_DATA_URL);
-    const { prices } = cryptoData;
-    dispatch(setData({ prices, timeRange }));
+    dispatch(setData({ data: cryptoData, timeRange }));
     dispatch(setDataLoading(false));
     dispatch(setError(null));
     // TODO - Add error reporting
