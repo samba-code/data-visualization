@@ -33,12 +33,15 @@ import {
   selectDataLoading,
   selectData,
   getCryptoData,
+  getCoinsList,
   selectError,
   setTimeRange,
   selectTimeRange,
-  getCurrencyList,
   selectCurrency,
+  selectCoinsList,
   setCurrency,
+  selectAsset,
+  setAsset,
 } from "./cryptoTrackerSlice";
 
 const ButtonHolder = styled.div`
@@ -57,29 +60,33 @@ const CryptoTracker = () => {
   const error = useSelector(selectError);
   const timeRange = useSelector(selectTimeRange);
   const currency = useSelector(selectCurrency);
+  const coinsList = useSelector(selectCoinsList);
+  const asset = useSelector(selectAsset);
 
   const noop = (x) => x;
   const formatX = DAY_VALUES?.[timeRange]?.format ?? noop;
   const ticks = DAY_VALUES?.[timeRange]?.ticks ?? 12;
 
   useEffect(() => {
-    dispatch(getCurrencyList());
-  });
-
-  useEffect(() => {
     // TODO - update caching
-    dispatch(getCryptoData(timeRange, currency));
-  }, [timeRange, currency]);
+    dispatch(getCoinsList());
+    dispatch(getCryptoData(timeRange, currency, asset));
+  }, [timeRange, currency, asset]);
 
   const onCurrencyChange = (e) => {
     console.log(e.currentTarget.value);
     dispatch(setCurrency(e.currentTarget.value));
   };
 
+  const onAssetChange = (e) => {
+    console.log(e.currentTarget.value);
+    dispatch(setAsset(e.currentTarget.value));
+  };
+
   const currencyData = Object.values(CURRENCIES).find(
     (c) => c.name === currency
   );
-  console.log("currencyData: ", currencyData);
+
   const currencyFormat = makeCurrencyFormat(currencyData.format);
 
   return (
@@ -147,9 +154,13 @@ const CryptoTracker = () => {
         <Controls>
           <InputContainer>
             <Label htmlFor="asset-select">Asset</Label>
-            <SelectBox id="asset-select" onChange={() => {}} value={"aaa"}>
-              {["Bitcoin", "Ethereum", "Dodgecoin"].map((x) => {
-                return <option key={x}>{x}</option>;
+            <SelectBox id="asset-select" onChange={onAssetChange} value={asset}>
+              {Object.values(coinsList).map((coin) => {
+                return (
+                  <option key={coin.id} value={coin.id}>
+                    {coin.name}
+                  </option>
+                );
               })}
             </SelectBox>
           </InputContainer>

@@ -31,10 +31,6 @@ export const DAY_VALUES = {
   },
 };
 
-const COINGECKO_URL = "https://api.coingecko.com/api/v3";
-
-export const CURRENCY_URL = `${COINGECKO_URL}/simple/supported_vs_currencies`;
-
 export const CURRENCIES = {
   "Pound Sterling": {
     name: "Pound Sterling",
@@ -158,17 +154,12 @@ export const CURRENCIES = {
   },
 };
 
-const CURRENCY_CODES = Object.values(CURRENCIES).map((x) => x.code);
+export const COINGECKO_URL = "https://api.coingecko.com/api/v3";
+
+export const CURRENCY_CODES = Object.values(CURRENCIES).map((x) => x.code);
 
 export const DEFAULT_CURRENCY = CURRENCIES["Pound Sterling"];
 
-export const makeDataURL = (time, currency = DEFAULT_CURRENCY.code) => {
-  if (!DAY_VALUES[time]) {
-    throw new Error(`Crypto data time value not valid: ${time}`);
-  }
-  if (!CURRENCY_CODES.includes(currency)) {
-    throw new Error(`Currency is not a valid format: ${currency}`);
-  }
-  const { day, interval } = DAY_VALUES[time];
-  return `${COINGECKO_URL}/coins/bitcoin/market_chart?vs_currency=${currency}&days=${day}&interval=${interval}`;
-};
+export const DEFAULT_ASSET = "bitcoin";
+
+export const COINS_LIST_URL = `${COINGECKO_URL}/coins/list`;
