@@ -10,7 +10,7 @@ import PageWrapper from "../../atoms/PageWrapper/PageWrapper";
 import MainContent from "../../atoms/MainContent/MainContent";
 import Header from "../../atoms/Header/Header";
 import Footer from "../../atoms/Footer/Footer";
-import NavBar from "../../atoms/NavBar/NavBar";
+// import NavBar from "../../atoms/NavBar/NavBar";
 import Button from "../../atoms/Button/Button";
 import Logo from "../../atoms/Logo/Logo";
 import ErrorMessage from "../../atoms/ErrorMessage/ErrorMessage";
@@ -26,7 +26,7 @@ import {
   InputContainer,
 } from "../../styles/styledComponents";
 
-import { DAY_VALUES, CURRENCIES, DATA_TYPES } from "./constants";
+import { DAY_VALUES, CURRENCIES } from "./constants";
 import { makeCurrencyFormat } from "./utils";
 
 import {
@@ -43,7 +43,6 @@ import {
   selectAsset,
   selectDataType,
   setAsset,
-  setDataType,
 } from "./cryptoTrackerSlice";
 
 const ButtonHolder = styled.div`
@@ -86,38 +85,30 @@ const CryptoTracker = () => {
     dispatch(setAsset(e.currentTarget.value));
   };
 
-  const onDataTypeChange = (e) => {
-    dispatch(setDataType(e.currentTarget.value));
-  };
+  // const onDataTypeChange = (e) => {
+  //   dispatch(setDataType(e.currentTarget.value));
+  // };
 
   const currencyData = Object.values(CURRENCIES).find(
     (c) => c.name === currency
   );
 
-  const assetData = Object.values(coinsList).find(
-    (a) => a.id === asset
-  );
-
+  const assetData = Object.values(coinsList).find((a) => a.id === asset);
 
   const currencyFormat = makeCurrencyFormat(currencyData.format);
 
-  console.log(data);
-  console.log(timeRange);
-  console.log(dataType);
-  console.log(data[timeRange][dataType]);
-
   return (
     <PageWrapper>
-      <NavBar />
       <Header>
         <Heading1>Crypto Price Chart</Heading1>
       </Header>
       <IntroductionArea>
         <Introduction>
           <Paragraph>
-            This chart displays live cryptocurrency data from{" "}
-            <a href="https://www.coingecko.com">CoinGecko</a>. Select time
-            range, currency and asset below.
+            This chart displays price data for the top 100 cryptocurrencies by
+            market cap. Select time range, currency and asset below. Data
+            sourced from the <a href="https://www.coingecko.com">CoinGecko</a>{" "}
+            API.
           </Paragraph>
           <Paragraph>
             If you need a custom interactive data visualisation for your project
@@ -133,7 +124,9 @@ const CryptoTracker = () => {
         </Introduction>
       </IntroductionArea>
       <MainContent>
-        <Heading2>{assetData?.name ?? ""} Price</Heading2>
+        <Heading2>
+          {`${assetData?.name ? `${assetData?.name} Price` : ""}`}
+        </Heading2>
         <ButtonHolder>
           <Button
             selected={timeRange === DAY_VALUES.DAY.id}
@@ -194,20 +187,6 @@ const CryptoTracker = () => {
               })}
             </SelectBox>
           </InputContainer>
-          {/* <InputContainer>
-            <Label htmlFor="data-type-select">Data type</Label>
-            <SelectBox
-              id="data-type-select"
-              onChange={onDataTypeChange}
-              value={dataType}
-            >
-              {Object.values(DATA_TYPES).map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </SelectBox>
-          </InputContainer> */}
         </Controls>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         {loading && (
@@ -226,6 +205,12 @@ const CryptoTracker = () => {
             interpolation={d3.curveLinear}
             tickFormatX={formatX}
             lineWidth={2}
+            customDimensions={{
+              marginTop: 40,
+              marginRight: 0,
+              marginBottom: 40,
+              marginLeft: 60,
+            }}
           />
         )}
       </MainContent>

@@ -21,9 +21,11 @@ const LineChart = ({
   numberOfTicksY,
   lineWidth,
   interpolation,
+  customDimensions,
 }) => {
   const [ref, dimensions] = useChartDimensions({
     height: 300,
+    ...customDimensions,
   });
 
   const xScale = d3
@@ -87,6 +89,12 @@ LineChart.propTypes = {
   tickFormatX: PropTypes.func,
   lineWidth: PropTypes.number,
   interpolation: PropTypes.func.isRequired,
+  customDimensions: PropTypes.shape({
+    marginTop: PropTypes.number,
+    marginRight: PropTypes.number,
+    marginBottom: PropTypes.number,
+    marginLeft: PropTypes.number,
+  }),
 };
 
 LineChart.defaultProps = {
@@ -96,5 +104,6 @@ LineChart.defaultProps = {
   yAccessor: (d) => d.y,
   tickFormatY: (d) => d,
   tickFormatX: (d) => d,
+  customDimensions: undefined,
 };
 export default LineChart;
