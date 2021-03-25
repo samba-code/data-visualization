@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo should match snapshot 1`] = `
+<div>
+  <a
+    aria-label="Email Samba Code"
+    href="obfuscated"
+    style="unicode-bidi:bidi-override;direction:rtl"
+  >
+    <img
+      alt="Samba Code"
+      height="30"
+      src="[object Object]"
+      width="150"
+    />
+  </a>
+</div>
+`;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainContent should match snapshot 1`] = `
+<div
+  class="MainContent__StyledMain-sc-1ihw2m3-0 gLWapz"
+>
+  Some Content
+</div>
+`;

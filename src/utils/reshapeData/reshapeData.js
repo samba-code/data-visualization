@@ -1,7 +1,6 @@
-/* global require */
-// This is a node script to transform data from 
+// This is a node script to transform data from
 // openweathermap to more simple format.
-// It is intentionally not optimised for effiency 
+// It is intentionally not optimised for effiency
 // because it only needs to be run once.
 
 const d3 = require("d3");
@@ -9,11 +8,8 @@ const fs = require("fs");
 
 var dateFormat = d3.timeFormat("%d-%m-%Y");
 
-fs.readFile("weather-history.json", "utf8", function (err, data) {
-  if (err) throw err;
-  const parsedData = JSON.parse(data);
-
-  const reshapedData = parsedData.map((d) => {
+export const reshapeData = (data) => {
+  const reshaped = data.map((d) => {
     const weatherDate = new Date(0);
     weatherDate.setUTCSeconds(d.dt);
     return {
@@ -29,7 +25,7 @@ fs.readFile("weather-history.json", "utf8", function (err, data) {
       clouds: d.clouds.all,
     };
   });
-  const dataByDay = reshapedData.reduce((acc, curr) => {
+  const dataByDay = reshaped.reduce((acc, curr) => {
     let currentDateValue = acc[curr.date];
     if (!currentDateValue) {
       acc[curr.date] = [curr];
@@ -39,8 +35,8 @@ fs.readFile("weather-history.json", "utf8", function (err, data) {
     return acc;
   }, {});
   const dayValues = Object.values(dataByDay);
-  const dayTotals = dayValues.map((d) =>
-    d.reduce((acc, curr, index) => {
+  const dayTotals = dayValues.map((d) => {
+    return d.reduce((acc, curr, index) => {
       if (acc) {
         const {
           date,
@@ -81,8 +77,8 @@ fs.readFile("weather-history.json", "utf8", function (err, data) {
       } else {
         return curr;
       }
-    })
-  );
+    });
+  });
 
   const averagedData = dayTotals.map((d) => {
     const {
@@ -96,7 +92,7 @@ fs.readFile("weather-history.json", "utf8", function (err, data) {
       snow,
       wind,
       clouds,
-      totalLength,
+      totalLength = 1,
     } = d;
     return {
       date: date,
@@ -112,9 +108,18 @@ fs.readFile("weather-history.json", "utf8", function (err, data) {
     };
   });
 
-  const outputJSON = JSON.stringify(averagedData);
-  fs.writeFile("output.json", outputJSON, function (err) {
-    if (err) return console.log(err);
-    console.log("Output complete");
+  const resultJSON = JSON.stringify(averagedData);
+  return resultJSON;
+};
+
+export const reshapeFile = (fileName) =>
+  fs.readFile(fileName, "utf8", function (err, data) {
+    if (err) throw err;
+    const parsedData = JSON.parse(data);
+    const outputJSON = reshapeData(parsedData);
+    fs.writeFile("output.json", outputJSON, function (err) {
+      if (err) return console.log(err);
+    });
   });
-});
+
+// reshapeFile("weather-history.json");

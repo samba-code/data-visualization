@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Paragraph should match snapshot 1`] = `
+<p
+  class="Paragraph__StyledPara-teknvt-0 eCRiac"
+>
+  Some text
+</p>
+`;

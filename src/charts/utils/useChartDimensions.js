@@ -1,5 +1,3 @@
-// From Fullstack D3 book by Amelia Wattenberger
-
 import { useEffect, useState, useRef } from "react";
 import ResizeObserver from "resize-observer-polyfill";
 

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageWrapper should match snapshot 1`] = `
+<div
+  class="PageWrapper__StyledDiv-sc-3gvzae-0 hHrrIt"
+>
+  Some Content
+</div>
+`;

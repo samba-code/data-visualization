@@ -9,23 +9,23 @@ import Axis from "../../chartElements/Axis/Axis";
 import { useChartDimensions } from "../../utils/useChartDimensions";
 import { accessorPropsType } from "../../utils/utils";
 
-const formatDate = (time) => {
-  const formattedTime = d3.timeFormat("%e/%m/%Y");
-  return formattedTime(time);
-};
-
 const LineChart = ({
   data,
   xAccessor,
   yAccessor,
   yLabel,
   xLabel,
-  tickFormat,
+  tickFormatY,
+  tickFormatX,
   numberOfTicksX,
   numberOfTicksY,
+  lineWidth,
+  interpolation,
+  customDimensions,
 }) => {
   const [ref, dimensions] = useChartDimensions({
     height: 300,
+    ...customDimensions,
   });
 
   const xScale = d3
@@ -52,7 +52,7 @@ const LineChart = ({
             dimension="x"
             scale={xScale}
             label={xLabel}
-            formatTick={formatDate}
+            formatTick={tickFormatX}
             numberOfTicks={numberOfTicksX}
           />
           <Axis
@@ -60,15 +60,16 @@ const LineChart = ({
             dimension="y"
             scale={yScale}
             label={yLabel}
-            formatTick={tickFormat}
+            formatTick={tickFormatY}
             numberOfTicks={numberOfTicksY}
           />
           <ChartLine
             data={data}
             xAccessor={xAccessorScaled}
             yAccessor={yAccessorScaled}
-            interpolation={d3.curveLinear}
+            interpolation={interpolation}
             strokeColor="#00115C"
+            lineWidth={lineWidth}
           />
         </ChartSizer>
       </ChartWrapper>
@@ -84,12 +85,25 @@ LineChart.propTypes = {
   yLabel: PropTypes.string,
   numberOfTicksX: PropTypes.number,
   numberOfTicksY: PropTypes.number,
-  tickFormat: PropTypes.func,
+  tickFormatY: PropTypes.func,
+  tickFormatX: PropTypes.func,
+  lineWidth: PropTypes.number,
+  interpolation: PropTypes.func.isRequired,
+  customDimensions: PropTypes.shape({
+    marginTop: PropTypes.number,
+    marginRight: PropTypes.number,
+    marginBottom: PropTypes.number,
+    marginLeft: PropTypes.number,
+  }),
 };
 
 LineChart.defaultProps = {
+  numberOfTicksY: 6,
+  numberOfTicksX: 12,
   xAccessor: (d) => d.x,
   yAccessor: (d) => d.y,
-  tickFormat: (d) => d,
+  tickFormatY: (d) => d,
+  tickFormatX: (d) => d,
+  customDimensions: undefined,
 };
 export default LineChart;

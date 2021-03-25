@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingSpinner should match snapshot 1`] = `
+<div
+  class="LoadingSpinner__StyledLoading-sc-17pj9ki-0 jNAaLu"
+>
+  <span
+    class="css-0"
+  >
+    <span
+      class="css-129peub"
+    />
+    <span
+      class="css-prnvxp"
+    />
+    <span
+      class="css-8el4s5"
+    />
+    <span
+      class="css-1hf2v34"
+    />
+    <span
+      class="css-tx0a7l"
+    />
+  </span>
+  <p
+    class="LoadingSpinner__LoadingText-sc-17pj9ki-1 iQTncG"
+  >
+    Loading data
+  </p>
+</div>
+`;

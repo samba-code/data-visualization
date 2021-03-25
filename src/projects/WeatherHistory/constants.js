@@ -1,3 +1,6 @@
+import { parseISO, getYear } from "date-fns";
+import { range } from "lodash";
+
 export const weatherMeasures = {
   "Average temperature": {
     label: "Average temperature",
@@ -49,3 +52,26 @@ export const weatherMeasures = {
 
 export const EARLIEST_DATE = "1980-01-01";
 export const LAST_DATE = "2020-12-31";
+export const WEATHER_DATA_URL =
+  "https://data.sambacode.net/weather-history-london.json";
+
+export const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export const YEARS = range(
+  getYear(parseISO(EARLIEST_DATE)),
+  getYear(parseISO(LAST_DATE)) + 1,
+  1
+);

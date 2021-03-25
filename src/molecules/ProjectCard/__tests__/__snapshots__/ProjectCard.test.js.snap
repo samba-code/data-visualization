@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectCard ProjectCard to match snapshot 1`] = `
+<article
+  class="ProjectCard__ArticalCard-qndfbd-0 kCvQUP"
+>
+  <div
+    class="ProjectCard__ImageHolder-qndfbd-3 kDUquc"
+  >
+    <div
+      class="ProjectCard__NoImage-qndfbd-6 jRQeBA"
+    />
+  </div>
+  <div
+    class="ProjectCard__TextWrapper-qndfbd-4 cPcrDr"
+  >
+    <h1
+      class="ProjectCard__CardHeading1-qndfbd-1 lfCRVo"
+    >
+      Default Card Title
+    </h1>
+    <p
+      class="ProjectCard__ProjectText-qndfbd-2 ifIwjv"
+    >
+      This is a description of a project. It contains some detail about the project. This is a description of a project. It contains some detail about the project.
+    </p>
+    <a
+      aria-current="page"
+      href="/"
+    >
+      &gt; View Project
+    </a>
+  </div>
+</article>
+`;
