@@ -27,7 +27,7 @@ import {
 } from "../../styles/styledComponents";
 
 import { DAY_VALUES, CURRENCIES } from "./constants";
-import { currencyFormat } from "./utils";
+import { makeCurrencyFormat } from "./utils";
 
 import {
   selectDataLoading,
@@ -75,6 +75,12 @@ const CryptoTracker = () => {
     console.log(e.currentTarget.value);
     dispatch(setCurrency(e.currentTarget.value));
   };
+
+  const currencyData = Object.values(CURRENCIES).find(
+    (c) => c.name === currency
+  );
+  console.log("currencyData: ", currencyData);
+  const currencyFormat = makeCurrencyFormat(currencyData.format);
 
   return (
     <PageWrapper>
